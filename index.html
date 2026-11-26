@@ -1,317 +1,731 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#102d4f">
-<title>KCS CHARPENTE PRO CI – Atelier & Devis</title>
-<style>
-:root{--navy:#102d4f;--blue:#1769aa;--gold:#e6ad35;--teal:#168c82;--bg:#f2f5f9;--ink:#1d2939;--muted:#66768a;--line:#d9e1eb;--white:#fff;--danger:#b42318;--ok:#16764f;--shadow:0 5px 18px #12345a12}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
-header{background:linear-gradient(115deg,#102d4f,#1769aa 75%,#168c82);color:#fff;padding:15px clamp(12px,3vw,32px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:12px}.logo{height:48px;width:48px;border:2px solid #fff;border-radius:13px;display:grid;place-items:center;font-size:19px;font-weight:900;letter-spacing:-1px}.brand h1{font-size:clamp(18px,2.5vw,25px);margin:0}.brand p{margin:2px 0 0;color:#dbeafe;font-size:12px}.top-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
-button,.btn{border:0;border-radius:9px;padding:9px 13px;background:var(--blue);color:#fff;font:650 13px system-ui;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:37px}
-button:hover,.btn:hover{filter:brightness(.95)}button.secondary,.btn.secondary{background:#e9eff6;color:#183c60}button.gold{background:var(--gold);color:#2d2617}button.green{background:var(--teal)}button.red{background:var(--danger)}button.ghost{background:transparent;color:#23496f;border:1px solid var(--line)}button:disabled{opacity:.4;cursor:not-allowed}
-.status{font-size:11px;padding:5px 9px;border-radius:20px;background:#e9f8ef;color:#12623e;font-weight:750}.status.off{background:#fff4dc;color:#875d00}
-nav{display:flex;gap:5px;overflow:auto;padding:9px 12px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
-nav button{white-space:nowrap;background:transparent;color:#506176;padding:9px 12px}nav button.active{background:#e8f2fc;color:#103b63}
-main{max-width:1550px;margin:auto;padding:20px clamp(10px,2.2vw,28px) 55px}.tab{display:none}.tab.active{display:block}
-h2{font-size:22px;color:var(--navy);margin:0 0 4px}h3{font-size:16px;color:var(--navy);margin:0 0 12px}h4{font-size:13px;color:#294967;margin:13px 0 7px}.sub{color:var(--muted);margin:0 0 17px}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:13px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px;box-shadow:var(--shadow);min-width:0}.s12{grid-column:span 12}.s9{grid-column:span 9}.s8{grid-column:span 8}.s7{grid-column:span 7}.s6{grid-column:span 6}.s5{grid-column:span 5}.s4{grid-column:span 4}.s3{grid-column:span 3}
-.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.fields.three{grid-template-columns:repeat(3,minmax(0,1fr))}.field{display:flex;flex-direction:column;gap:4px;min-width:0}.field label{font-size:11px;font-weight:750;color:#526276}.field input,.field select,.field textarea{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:9px;background:#fff;color:var(--ink);font:inherit;min-width:0}.field textarea{min-height:75px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid #9ac9f5;border-color:#60a5fa}.hint{font-size:11px;color:var(--muted)}.row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.between{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.kpi{background:#f5f9fd;border:1px solid #e1eaf3;border-radius:10px;padding:10px}.kpi small{display:block;color:var(--muted);font-size:10px}.kpi strong{display:block;font-size:19px;color:var(--navy);margin-top:3px}.note{background:#fff8e8;border-left:4px solid var(--gold);padding:10px 12px;border-radius:8px;font-size:12px;color:#624d1e;margin:10px 0}.note.red{background:#fff0ef;border-color:var(--danger);color:#7a271a}.note.green{background:#ecfaf3;border-color:var(--ok);color:#155c41}
-.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:9px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:8px;border-bottom:1px solid #e8edf3;text-align:left;vertical-align:middle}th{background:#f4f7fa;color:#46596e;font-size:10px;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}td.num,th.num{text-align:right;white-space:nowrap}td input,td select{padding:6px;border:1px solid #d5dce5;border-radius:6px;max-width:150px}
-.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.model{border:1px solid var(--line);border-radius:11px;padding:8px;background:#fff;cursor:pointer;text-align:left;color:var(--ink);display:block;width:100%;min-height:0}.model:hover,.model.selected{border:2px solid var(--blue);padding:7px;background:#f4f9ff}.model svg{width:100%;height:95px;display:block;background:linear-gradient(#f9fbfd,#eef3f8);border-radius:7px}.model b{display:block;margin:7px 0 2px;font-size:12px}.model small{color:var(--muted);font-size:10px}
-.canvasbox{background:#eaf0f6;border:1px solid var(--line);border-radius:12px;padding:8px}.toolbar{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}.toolbar button{padding:7px 10px;min-height:34px}.toolbar button.active{outline:2px solid var(--gold)}canvas{display:block;width:100%;height:min(64vh,560px);min-height:300px;background:white;border:1px solid #cbd5e1;border-radius:8px;touch-action:none;cursor:crosshair}.palette{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.swatch{height:27px;width:27px;min-height:27px;border:2px solid #fff;outline:1px solid #b9c4d1;border-radius:50%;padding:0}.swatch.active{outline:3px solid var(--gold)}.toolgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.toolgrid button{width:100%}
-.calcbox{background:#f6f9fc;border:1px solid var(--line);border-radius:10px;padding:10px}.calcdisplay{font-size:22px;font-weight:750;text-align:right;background:#fff;border:1px solid var(--line);border-radius:7px;padding:9px;margin-bottom:7px;min-height:44px}.keypad{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.keypad button{min-height:38px;background:#e8eef5;color:#183c60}.keypad button.op{background:#dcecfb}.keypad button.eq{background:var(--blue);color:#fff}
-.previewsvg{width:100%;max-height:260px;background:#f6f9fc;border:1px solid var(--line);border-radius:10px}
-.badge{font-size:10px;font-weight:750;padding:4px 8px;background:#eaf1f8;color:#31516e;border-radius:20px;display:inline-block}.hidden{display:none!important}.muted{color:var(--muted)}.right{text-align:right}
-.logo-preview{max-height:80px;max-width:170px;object-fit:contain}.quote-sheet{background:#fff;padding:24px;border:1px solid var(--line);border-radius:10px}.quote-head{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-bottom:3px solid var(--navy);padding-bottom:13px}.quote-head h2{font-size:20px}.quote-photo{max-width:100%;max-height:260px;object-fit:contain;margin-top:12px;border:1px solid #ddd}
-a{color:#1769aa}footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
-@media(max-width:950px){.s9,.s8,.s7,.s5,.s4,.s3{grid-column:span 6}.kpis{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:620px){header{padding:12px}.top-actions{width:100%}.top-actions button{flex:1}.s9,.s8,.s7,.s6,.s5,.s4,.s3{grid-column:span 12}.fields,.fields.three{grid-template-columns:1fr 1fr}.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}canvas{height:52vh;min-height:270px}.card{padding:12px}.toolbar button{font-size:11px;padding:7px}.quote-sheet{padding:12px}}
-@media(max-width:390px){.fields,.fields.three{grid-template-columns:1fr}.brand h1{font-size:17px}}
-@media print{header,nav,.no-print,footer{display:none!important}body{background:#fff}.tab{display:none!important}#tab-quote{display:block!important}main{padding:0;max-width:none}.card{box-shadow:none;border:0}.quote-sheet{border:0;padding:0}.quote-photo{max-height:180px}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KCS CHARPENTE PRO CI — Studio CAO & Devis SaaS</title>
+  <style>
+    :root {
+      --bleu-fonce: #0f172a;
+      --bleu-kcs: #1d4ed8;
+      --or-kcs: #d97706;
+      --fond: #f1f5f9;
+      --carte: #ffffff;
+      --bordure: #cbd5e1;
+      --texte: #1e293b;
+      --vert: #15803d;
+    }
+    * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body { margin: 0; background: var(--fond); color: var(--texte); }
+    header {
+      background: linear-gradient(135deg, var(--bleu-fonce), var(--bleu-kcs));
+      color: #fff; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+    }
+    header h1 { margin: 0; font-size: 18px; }
+    header span { font-size: 12px; opacity: 0.9; }
+    .barre-onglets {
+      display: flex; gap: 6px; padding: 10px 20px; background: #e2e8f0; border-bottom: 1px solid var(--bordure); flex-wrap: wrap;
+    }
+    .onglet {
+      padding: 9px 15px; border: none; border-radius: 6px; background: #fff; cursor: pointer; font-weight: 600; color: var(--texte);
+    }
+    .onglet.actif { background: var(--bleu-kcs); color: #fff; }
+    .conteneur { display: grid; grid-template-columns: 1fr 340px; gap: 16px; padding: 16px 20px; }
+    @media (max-width: 960px) { .conteneur { grid-template-columns: 1fr; } }
+    .panneau { background: var(--carte); border: 1px solid var(--bordure); border-radius: 10px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+    .section-cachee { display: none; }
+    .outils-dessin { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; align-items: center; }
+    button.btn {
+      padding: 8px 12px; border-radius: 6px; border: 1px solid var(--bordure); background: #f8fafc; cursor: pointer; font-weight: 600; font-size: 13px;
+    }
+    button.btn.actif, button.btn-primaire { background: var(--bleu-kcs); color: #fff; border-color: var(--bleu-kcs); }
+    button.btn-succes { background: var(--vert); color: #fff; border-color: var(--vert); }
+    button.btn-or { background: var(--or-kcs); color: #fff; border-color: var(--or-kcs); }
+    #zone-toile {
+      width: 100%; height: 480px; border: 2px solid var(--bleu-fonce); border-radius: 8px; background: #fff; cursor: crosshair; touch-action: none;
+    }
+    .grille-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 12px; }
+    label { display: flex; flex-direction: column; font-size: 12px; font-weight: 600; gap: 4px; }
+    input, select { padding: 8px; border: 1px solid var(--bordure); border-radius: 6px; font-size: 13px; }
+    .carte-proposition { background: #f8fafc; border-left: 4px solid var(--bleu-kcs); padding: 10px; border-radius: 6px; margin-bottom: 10px; font-size: 13px; }
+    .badge-esthetique { display: inline-block; padding: 4px 8px; border-radius: 4px; background: #fef3c7; color: #92400e; font-weight: 700; font-size: 12px; margin-top: 6px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+    th, td { border: 1px solid var(--bordure); padding: 8px; text-align: left; }
+    th { background: #f1f5f9; }
+    /* Impression Devis 1 à 2 pages avec Bannière ou Filigrane */
+    #apercu-devis { position: relative; background: #fff; padding: 24px; border: 1px solid var(--bordure); border-radius: 8px; overflow: hidden; }
+    #image-banniere-devis { width: 100%; max-height: 170px; object-fit: contain; border: 1px solid #e2e8f0; border-radius: 6px; margin: 10px 0; display: none; }
+    #image-filigrane-devis { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 75%; opacity: 0.10; pointer-events: none; display: none; z-index: 0; }
+    .contenu-devis { position: relative; z-index: 1; }
+    @media print {
+      header, .barre-onglets, .panneau-lateral, .no-print { display: none !important; }
+      .conteneur { display: block; padding: 0; }
+      #apercu-devis { border: none; padding: 0; }
+    }
+  </style>
 </head>
 <body>
+
 <header>
- <div class="brand"><div class="logo" id="brandMark">KCS</div><div><h1>KCS CHARPENTE PRO CI</h1><p>Atelier de dessin • Métré • Matériaux • Devis professionnel</p></div></div>
- <div class="top-actions"><span id="netStatus" class="status">● Hors connexion prêt</span><button class="gold" onclick="newProject()">＋ Nouveau projet</button><button class="secondary" onclick="backup()">Sauvegarder</button><button class="secondary" onclick="$('restore').click()">Restaurer</button><input id="restore" type="file" accept=".json" class="hidden" onchange="restore(event)"></div>
+  <div>
+    <h1>KCS CHARPENTE PRO CI — Studio CAO & Devis</h1>
+    <span>Conception 2D • Cotation mm • Charpente & Devis SaaS (Mode Hors-Ligne Actif)</span>
+  </div>
+  <div>
+    <button class="btn btn-or" onclick="sauvegarderProjetLocal()">💾 Sauvegarder</button>
+    <button class="btn" onclick="exporterProjetJSON()">⬇️ Exporter JSON</button>
+  </div>
 </header>
-<nav id="nav" class="no-print">
- <button class="active" data-tab="home">Projet</button><button data-tab="models">Galerie modèles</button><button data-tab="draw">Atelier dessin</button><button data-tab="materials">Bibliothèque matériaux</button><button data-tab="calc">Calcul & métré</button><button data-tab="quote">Devis</button><button data-tab="company">Entreprise</button><button data-tab="history">Historique</button><button data-tab="resources">Références & aide</button>
+
+<nav class="barre-onglets">
+  <button class="onglet actif" onclick="changerOnglet('atelier', this)">📐 1. Atelier Dessin & Structure</button>
+  <button class="onglet" onclick="changerOnglet('devis', this)">📄 2. Devis Verrouillé & PDF</button>
+  <button class="onglet" onclick="changerOnglet('catalogue', this)">📦 3. Catalogue Tôles & Matériaux</button>
 </nav>
-<main>
-<section id="tab-home" class="tab active">
- <h2>Préparer un nouveau chantier</h2><p class="sub">Choisissez le modèle, le système de fabrication et les dimensions. Les données sont sauvegardées automatiquement sur cet appareil.</p>
- <div class="grid">
-  <div class="card s8">
-   <h3>Identification du projet</h3>
-   <div class="fields three">
-    <div class="field"><label>Référence</label><input id="ref" value="KCS-2026-001"></div><div class="field"><label>Client / maître d'ouvrage</label><input id="client" placeholder="Nom du client"></div><div class="field"><label>Téléphone</label><input id="phone" placeholder="Téléphone"></div>
-    <div class="field"><label>Lieu du chantier</label><input id="location" placeholder="Commune, ville"></div><div class="field"><label>Type de fabrication</label><select id="system"><option value="bois_trad">Charpente bois traditionnelle</option><option value="menuisier">Charpente fabriquée par menuisier bois</option><option value="metal">Charpente métallique / ferronnier</option><option value="mixte">Structure mixte bois-métal</option><option value="pergola_bois">Pergola en bois</option><option value="pergola_metal">Pergola métallique</option><option value="auvent">Auvent / marquise</option><option value="dalle">Dalle béton / toiture-terrasse</option></select></div>
-    <div class="field"><label>Modèle de toiture</label><select id="roof"><option value="gable">Deux pentes</option><option value="hip">Quatre pentes / croupe</option><option value="mono">Une pente</option><option value="flat">Toiture terrasse</option><option value="mansard">Mansardée</option><option value="L">Maison en L / décalée</option><option value="T">Maison en T</option><option value="courtyard">Maison à cour intérieure</option><option value="complex">Plusieurs pans / complexe</option></select></div>
-    <div class="field"><label>Forme du bâtiment</label><select id="shape"><option>Rectangulaire</option><option>Carrée</option><option>Décalée / avec décroché</option><option>En L</option><option>En T</option><option>En U</option><option>Avec cour intérieure</option><option>Libre / polygonale</option></select></div>
-    <div class="field"><label>Couverture / revêtement</label><select id="cover"><option value="bac">Tôle bac acier</option><option value="alu">Tôle bac aluminium</option><option value="ond">Tôle ondulée</option><option value="tile">Tuile mécanique / romane</option><option value="canal">Tuile canal</option><option value="flat_tile">Tuile plate</option><option value="imitation">Tôle imitation tuile</option><option value="sandwich">Panneau sandwich</option><option value="poly">Plaque translucide</option><option value="membrane">Membrane / étanchéité terrasse</option><option value="other">Autre</option></select></div>
-    <div class="field"><label>Unité des dimensions</label><select id="unit"><option value="m">Mètres</option><option value="cm">Centimètres</option></select></div>
-   </div>
-   <h4>Dimensions principales</h4><div class="fields three">
-    <div class="field"><label>Longueur bâtiment (m)</label><input id="length" type="number" min=".1" step=".01" value="12"></div><div class="field"><label>Largeur bâtiment (m)</label><input id="width" type="number" min=".1" step=".01" value="10"></div><div class="field"><label>Débord de toiture (m)</label><input id="overhang" type="number" min="0" step=".01" value=".50"></div>
-    <div class="field"><label>Hauteur au chaînage (m)</label><input id="wallH" type="number" min="0" step=".01" value="3"></div><div class="field"><label>Pente (%)</label><input id="slope" type="number" min="0" step=".1" value="30"></div><div class="field"><label>Hauteur faîtage au-dessus chaînage (m)</label><input id="ridge" type="number" min="0" step=".01" placeholder="Auto selon pente"></div>
-    <div class="field"><label>Entraxe fermes / portiques (m)</label><input id="trussGap" type="number" min=".1" step=".01" value="3"></div><div class="field"><label>Entraxe chevrons (m)</label><input id="rafterGap" type="number" min=".1" step=".01" value=".60"></div><div class="field"><label>Entraxe pannes (m)</label><input id="purlinGap" type="number" min=".1" step=".01" value="1.20"></div>
-   </div>
-   <div class="actions"><button onclick="calculate()">Calculer le projet</button><button class="secondary" onclick="saveCurrent()">Enregistrer maintenant</button><button class="secondary" onclick="newProject()">Nouveau / effacer client</button></div>
-  </div>
-  <div class="card s4"><h3>Aperçu du modèle</h3><div id="modelPreview"></div><div class="note">Choisissez un modèle dans « Galerie modèles » pour charger un exemple et adapter ses dimensions. Les formes en L, T et complexes doivent être décomposées en pans distincts pour un métré exact.</div><div id="quickStats" class="muted">Aucun calcul lancé.</div></div>
-  <div class="card s12"><h3>Paramètres propres au chantier</h3><div class="fields three">
-   <div class="field"><label>Essence / classe du bois</label><input id="woodType" placeholder="Essence, classe mécanique, humidité…"></div><div class="field"><label>Traitement du bois</label><select id="woodTreatment"><option>À définir</option><option>Traitement insecticide et fongicide</option><option>Bois traité en autoclave</option><option>Sans traitement (à justifier)</option></select></div><div class="field"><label>Nuance / qualité acier</label><input id="steelGrade" placeholder="Référence fabricant / nuance"></div>
-   <div class="field"><label>Type de faîtière</label><select id="ridgeType"><option>Faîtière adaptée au profil de tôle</option><option>Faîtière ventilée</option><option>Faîtière tuile</option><option>Faîtière demi-ronde</option><option>Faîtage zinc / aluminium</option><option>Pas de faîtage (monopente)</option><option>À définir</option></select></div><div class="field"><label>Longueur commerciale tôle (m)</label><input id="sheetLength" type="number" min=".1" step=".01" value="3"></div><div class="field"><label>Largeur totale tôle (m)</label><input id="sheetWidth" type="number" min=".1" step=".01" value=".90"></div>
-   <div class="field"><label>Recouvrement transversal (m)</label><input id="overlapL" type="number" min="0" step=".01" value=".20"></div><div class="field"><label>Recouvrement latéral (m)</label><input id="overlapW" type="number" min="0" step=".01" value=".10"></div><div class="field"><label>Perte / marge (%)</label><input id="waste" type="number" min="0" max="50" step=".5" value="8"></div>
-  </div></div>
- </div>
-</section>
 
-<section id="tab-models" class="tab">
- <h2>Galerie de modèles de maisons et de structures</h2><p class="sub">Ces schémas illustratifs sont intégrés à l'application et fonctionnent hors connexion. Sélectionnez un modèle pour préremplir le projet et l'atelier de dessin.</p>
- <div class="gallery" id="gallery"></div>
- <div class="note">Les images sont des schémas d'étude, pas des plans d'exécution. Chaque bâtiment réel doit être relevé et coté. Pour une maison décalée, en L ou en T, renseignez chaque aile comme un pan/volume indépendant.</div>
-</section>
+<div class="conteneur">
+  <!-- COLONNE PRINCIPALE -->
+  <main>
+    <!-- ONGLET 1 : ATELIER DESSIN CAO -->
+    <section id="section-atelier" class="panneau">
+      <div class="outils-dessin">
+        <button class="btn actif" id="outil-ligne" onclick="choisirOutil('ligne')">📏 Mur / Trait</button>
+        <button class="btn" id="outil-rectangle" onclick="choisirOutil('rectangle')">⬜ Contour Bâtiment</button>
+        <button class="btn" id="outil-porte" onclick="choisirOutil('porte')">🚪 Porte</button>
+        <button class="btn" id="outil-fenetre" onclick="choisirOutil('fenetre')">🪟 Fenêtre</button>
+        <button class="btn" id="outil-patio" onclick="choisirOutil('patio')">🌿 Patio / Vide</button>
+        <button class="btn" id="outil-chienassis" onclick="choisirOutil('chienassis')">🏠 Chien-assis</button>
+        <button class="btn btn-succes" onclick="genererCharpenteAuto()">⚡ Charpente 4 Pans Auto</button>
+        <button class="btn" onclick="annulerDernierTrait()">↩️ Annuler</button>
+        <button class="btn" onclick="effacerToile()">🗑️ Effacer</button>
+      </div>
 
-<section id="tab-draw" class="tab">
- <h2>Atelier de dessin souple – souris, stylet et doigt</h2><p class="sub">Surface de dessin adaptée au téléphone. Les boutons Annuler / Refaire, la palette et les outils sont accessibles au doigt comme à la souris.</p>
- <div class="grid">
-  <div class="card s9">
-   <div class="toolbar no-print">
-    <button class="secondary" onclick="undo()" title="Annuler">↶ Retour</button><button class="secondary" onclick="redo()" title="Rétablir">↷ Refaire</button><button class="secondary" onclick="clearDrawing()">Effacer tout</button><button class="secondary" onclick="zoomBy(1.15)">＋ Zoom</button><button class="secondary" onclick="zoomBy(.87)">－ Zoom</button><button class="secondary" onclick="resetZoom()">Ajuster</button>
-   </div>
-   <div class="toolbar no-print" id="drawTools">
-    <button data-tool="free" class="active" onclick="tool('free')">✎ Main levée</button><button data-tool="line" onclick="tool('line')">╱ Ligne</button><button data-tool="rect" onclick="tool('rect')">□ Rectangle</button><button data-tool="circle" onclick="tool('circle')">○ Cercle</button><button data-tool="arrow" onclick="tool('arrow')">➜ Flèche</button><button data-tool="text" onclick="tool('text')">T Texte</button><button data-tool="dim" onclick="tool('dim')">↔ Cote</button><button data-tool="erase" onclick="tool('erase')">Gomme</button><label class="btn secondary">Importer image<input class="hidden" type="file" accept="image/*" onchange="importImage(event)"></label>
-   </div>
-   <div class="canvasbox"><canvas id="board" width="1400" height="900"></canvas></div>
-   <div class="actions no-print"><button onclick="downloadDrawing()">Exporter PNG</button><button class="secondary" onclick="saveDrawing()">Enregistrer dessin au projet</button><button class="secondary" onclick="window.print()">Imprimer</button></div>
-  </div>
-  <div class="card s3">
-   <h3>Réglages du crayon</h3>
-   <div class="field"><label>Couleur</label><div class="palette" id="palette"></div></div>
-   <div class="fields" style="margin-top:12px"><div class="field"><label>Couleur personnalisée</label><input id="customColor" type="color" value="#1769aa" oninput="setColor(this.value)"></div><div class="field"><label>Épaisseur</label><input id="lineWidth" type="range" min="1" max="28" value="4" oninput="$('widthLabel').textContent=this.value+' px'"><span id="widthLabel" class="hint">4 px</span></div>
-    <div class="field"><label>Opacité</label><input id="opacity" type="range" min="10" max="100" value="100"></div><div class="field"><label>Grille</label><select id="gridMode" onchange="redraw()"><option value="40">Grille fine</option><option value="20">Grille très fine</option><option value="80">Grille large</option><option value="0">Sans grille</option></select></div>
-   </div>
-   <div class="field" style="margin-top:10px"><label>Texte / annotation à poser</label><input id="annotation" placeholder="Ex. Panne 75×225 mm"></div>
-   <div class="field" style="margin-top:10px"><label>Fond</label><select id="canvasBg" onchange="redraw()"><option value="#ffffff">Blanc</option><option value="#fffdf4">Papier ivoire</option><option value="#f3f7fb">Bleu clair</option></select></div>
-   <h4>Confort téléphone</h4><div class="note green">Le dessin fonctionne au doigt, au stylet ou à la souris. Le zoom et le canvas s'adaptent à la largeur de l'écran. Tournez le téléphone en paysage pour plus d'espace.</div>
-   <div class="toolgrid"><button class="secondary" onclick="tool('free')">Dessin libre</button><button class="secondary" onclick="tool('dim')">Ajouter une cote</button><button class="secondary" onclick="tool('text')">Ajouter un texte</button><button class="secondary" onclick="clearDrawing()">Nouveau croquis</button></div>
-   <h4>Image de référence</h4><div id="imageInfo" class="hint">Aucune image importée.</div>
-  </div>
- </div>
-</section>
+      <div class="grille-form">
+        <label>Longueur bâtiment (mm)
+          <input type="number" id="bat-longueur" value="18000" oninput="recalculerTout()" />
+        </label>
+        <label>Largeur bâtiment (mm)
+          <input type="number" id="bat-largeur" value="8000" oninput="recalculerTout()" />
+        </label>
+        <label>Hauteur chaînage bas (mm)
+          <input type="number" id="chainage-bas" value="1050" oninput="recalculerTout()" />
+        </label>
+        <label>Hauteur chaînage haut (mm)
+          <input type="number" id="chainage-haut" value="3000" oninput="recalculerTout()" />
+        </label>
+        <label>Pente Pan Principal (%)
+          <input type="number" id="pente-pan-1" value="35" oninput="recalculerTout()" />
+        </label>
+        <label>Pente Pan Secondaire (%)
+          <input type="number" id="pente-pan-2" value="35" oninput="recalculerTout()" />
+        </label>
+        <label>Débord charpente (mm)
+          <input type="number" id="debord-toit" value="700" oninput="recalculerTout()" />
+        </label>
+        <label>Échelle dessin (1 px = X mm)
+          <input type="number" id="echelle-mm" value="25" oninput="recalculerTout()" />
+        </label>
+      </div>
 
-<section id="tab-materials" class="tab">
- <h2>Bibliothèque personnalisable des matériaux</h2><p class="sub">Enregistrez vos références réelles, sections, diamètres, longueurs commerciales, fournisseurs et prix en FCFA. Les valeurs d'exemple sont modifiables et ne sont pas des prescriptions structurelles.</p>
- <div class="grid">
-  <div class="card s4"><h3>Ajouter / modifier un matériel</h3><div class="fields">
-   <div class="field"><label>Désignation</label><input id="mName" placeholder="Ex. Chevron bois rouge"></div><div class="field"><label>Famille</label><select id="mCat"><option>Bois massif</option><option>Bois reconstitué</option><option>Tube acier</option><option>Profilé acier</option><option>Fer rond / barre</option><option>Tôle / couverture</option><option>Tuile</option><option>Faîtière / rive / noue</option><option>Visserie / fixation</option><option>Peinture / protection</option><option>Gouttière / étanchéité</option><option>Main-d’œuvre</option><option>Transport</option><option>Autre</option></select></div>
-   <div class="field"><label>Section / diamètre</label><input id="mSection" placeholder="Ex. 75×150 mm, Ø12"></div><div class="field"><label>Longueur commerciale (m)</label><input id="mLength" type="number" min="0" step=".01" placeholder="Ex. 6"></div>
-   <div class="field"><label>Largeur (mm)</label><input id="mWidth" type="number" min="0" step=".1" placeholder="Ex. 75"></div><div class="field"><label>Épaisseur / hauteur (mm)</label><input id="mThickness" type="number" min="0" step=".1" placeholder="Ex. 150"></div>
-   <div class="field"><label>Qualité / classe</label><input id="mQuality" placeholder="Ex. choix 1, traité, galvanisé"></div><div class="field"><label>Type de prix</label><select id="mPriceType"><option>Prix d'achat</option><option>Prix de vente</option><option>Prix fournisseur</option><option>Prix indicatif</option></select></div>
-   <div class="field"><label>Unité</label><select id="mUnit"><option>pièce</option><option>mètre linéaire</option><option>m²</option><option>m³</option><option>kg</option><option>barre</option><option>paquet</option><option>litre</option><option>forfait</option><option>jour</option></select></div><div class="field"><label>Prix unitaire (FCFA)</label><input id="mPrice" type="number" min="0" value="0"></div>
-   <div class="field"><label>Fournisseur / ville</label><input id="mSupplier" placeholder="Fournisseur, Abidjan…"></div><div class="field"><label>Référence fabricant</label><input id="mRef" placeholder="Code / fiche technique"></div>
-   <div class="field"><label>Poids unitaire (kg) facultatif</label><input id="mWeight" type="number" min="0" step=".01"></div><div class="field"><label>Notes / application</label><input id="mNotes" placeholder="Usage, finition, teinte…"></div><div class="field"><label>Photo / image du matériau</label><input id="mImage" type="file" accept="image/*"></div>
-  </div><div class="actions"><button onclick="addMaterial()">Ajouter au catalogue</button><button class="secondary" onclick="clearMaterialForm()">Vider</button></div></div>
-  <div class="card s8"><div class="between"><h3>Catalogue enregistré</h3><span class="badge" id="materialCount">0 articles</span></div><div class="tablewrap"><table id="matTable"><thead><tr><th>Matériel / section</th><th>Famille</th><th>Longueur</th><th>Unité</th><th>Prix FCFA</th><th>Fournisseur</th><th></th></tr></thead><tbody></tbody></table></div><div class="actions"><button class="secondary" onclick="exportMaterials()">Exporter catalogue CSV</button><button class="secondary" onclick="seedMaterials()">Charger exemples modifiables</button></div></div>
- </div>
-</section>
+      <canvas id="zone-toile"></canvas>
+      <p style="font-size:12px; color:#475569; margin-top:6px;">
+        💡 <b>Curseur Revit actif :</b> Aimantation automatique (0°, 45°, 90°) et affichage des dimensions en temps réel en <b>mm</b> et <b>m</b>.
+      </p>
+    </section>
 
-<section id="tab-calc" class="tab">
- <h2>Calculatrice, géométrie et métré</h2><p class="sub">Les quantités sont des estimations de métrage à confirmer sur plans et fiches fabricants.</p>
- <div class="grid">
-  <div class="card s8"><h3>Résultats du projet</h3><div id="calcOutput" class="muted">Lancez « Calculer le projet » depuis l'onglet Projet.</div><div class="tablewrap" style="margin-top:12px"><table id="quantityTable"><thead><tr><th>Élément</th><th>Unité</th><th class="num">Quantité</th><th class="num">Longueur / détail</th><th>Hypothèse</th></tr></thead><tbody><tr><td colspan="5">Aucun métré calculé.</td></tr></tbody></table></div></div>
-  <div class="card s4"><h3>Calculatrice intégrée</h3><div class="calcbox"><div id="calcDisplay" class="calcdisplay">0</div><div class="keypad" id="keypad"></div></div><div class="note">Utilisez-la pour additionner des longueurs, calculer des surfaces ou contrôler une dimension.</div></div>
-  <div class="card s12"><h3>Contrôle de faisabilité – aide à la décision</h3><div id="feasibility" class="note">Aucun projet calculé.</div><p class="hint">Le module signale les informations manquantes et les incohérences de géométrie. Il ne calcule pas la résistance mécanique, les contraintes, les flèches, les assemblages ou les ancrages. Il ne peut donc pas donner une probabilité de solidité fiable.</p></div>
- </div>
-</section>
+    <!-- ONGLET 2 : DEVIS VERROUILLÉ -->
+    <section id="section-devis" class="panneau section-cachee">
+      <div class="outils-dessin no-print">
+        <button class="btn btn-or" id="btn-verrou" onclick="basculerVerrouillageDevis()">🔒 Verrouiller le plan pour Devis</button>
+        <label style="flex-direction:row; align-items:center;">Affichage du dessin :
+          <select id="mode-image-devis" onchange="appliquerModeImageDevis()">
+            <option value="aucun">Sans image</option>
+            <option value="banniere" selected>En Bannière (En-tête)</option>
+            <option value="filigrane">En Profondeur (Filigrane)</option>
+          </select>
+        </label>
+        <label style="flex-direction:row; align-items:center;">Marge imprévue (%) :
+          <input type="number" id="marge-imprevue" value="5" style="width:65px;" oninput="actualiserCalculDevis()" />
+        </label>
+        <label style="flex-direction:row; align-items:center;">Marge prévue (%) :
+          <input type="number" id="marge-prevue" value="20" style="width:65px;" oninput="actualiserCalculDevis()" />
+        </label>
+      </div>
 
-<section id="tab-quote" class="tab">
- <h2>Devis professionnel KCS</h2><p class="sub">Le devis reprend les informations de l'entreprise, le client, les postes chiffrés et, si vous le souhaitez, le dessin du projet.</p>
- <div class="card no-print"><div class="fields three">
-  <div class="field"><label>Objet du devis</label><input id="qObject" value="Étude, fourniture et pose de charpente et couverture"></div><div class="field"><label>Validité (jours)</label><input id="qValidity" type="number" value="15"></div><div class="field"><label>TVA / taxe (%)</label><input id="qTax" type="number" min="0" step=".1" value="0"></div>
-  <div class="field"><label>Frais généraux (%)</label><input id="qOverhead" type="number" min="0" step=".1" value="5"></div><div class="field"><label>Marge (%)</label><input id="qMargin" type="number" min="0" step=".1" value="15"></div><div class="field"><label>Remise (FCFA)</label><input id="qDiscount" type="number" min="0" value="0"></div>
-  <div class="field"><label>Inclure le dessin au devis</label><select id="qIncludeDrawing"><option value="yes">Oui</option><option value="no">Non</option></select></div><div class="field"><label>Ajouter les quantités calculées</label><select id="qAutoLines"><option value="yes">Oui, lignes de base</option><option value="no">Non, devis manuel</option></select></div><div class="field"><label>Signature / responsable</label><input id="qSigner" placeholder="Nom et fonction"></div>
- </div><div class="actions"><button onclick="prepareQuote()">Générer / actualiser devis</button><button class="secondary" onclick="addQuoteLine()">＋ Ajouter ligne</button><button class="green" onclick="window.print()">Imprimer / enregistrer PDF</button><button class="secondary" onclick="exportQuote()">Exporter CSV</button></div></div>
- <div class="quote-sheet" id="quoteSheet">
-  <div class="quote-head"><div class="row" style="align-items:flex-start"><img id="qLogo" class="logo-preview hidden"><div><h2 id="qCompany">KAMBOU CONSTRUCTIONS SERVICE SARLU</h2><b id="qTagline">KCS – Construire avec confiance, gérer avec rigueur</b><div id="qCompanyInfo" class="muted"></div></div></div><div class="right"><h2>DEVIS</h2><b id="qRef">KCS-DEVIS</b><div id="qDate"></div><div id="qValidityText"></div></div></div>
-  <p><b>Client :</b> <span id="qClientText">—</span> &nbsp; <b>Téléphone :</b> <span id="qPhoneText">—</span><br><b>Chantier :</b> <span id="qLocationText">—</span><br><b>Objet :</b> <span id="qObjectText"></span></p>
-  <div class="tablewrap"><table id="quoteTable"><thead><tr><th>Désignation</th><th>Unité</th><th class="num">Qté</th><th class="num">P.U. FCFA</th><th class="num">Total FCFA</th><th class="no-print"></th></tr></thead><tbody></tbody></table></div>
-  <div id="quoteTotal" style="max-width:420px;margin:12px 0 0 auto"></div><p><b>Arrêté le présent devis à :</b> <span id="quoteWords">—</span></p><img id="qDrawing" class="quote-photo hidden">
-  <div class="between" style="margin-top:35px;align-items:flex-start"><div>Le client<br><br>Signature précédée de « Bon pour accord »</div><div class="right">Pour KCS<br><b id="qSignerText"></b><br><br>Signature et cachet</div></div>
-  <p class="hint" style="margin-top:25px">Devis établi sur la base des renseignements communiqués. Les métrés, prix, caractéristiques des matériaux et validations techniques sont à confirmer avant commande et exécution.</p>
- </div>
-</section>
+      <!-- Saisie rapide avec auto-suggestion depuis le catalogue -->
+      <div class="grille-form no-print" style="background:#f8fafc; padding:10px; border-radius:8px; border:1px solid var(--bordure);">
+        <label>Désignation (tapez pour suggérer)
+          <input type="text" id="saisie-article" list="liste-suggestions" placeholder="Ex: Tôle bac, Chevron..." oninput="autoRemplirPrixArticle()" />
+          <datalist id="liste-suggestions"></datalist>
+        </label>
+        <label>Unité
+          <input type="text" id="saisie-unite" value="pièce" />
+        </label>
+        <label>Quantité
+          <input type="number" id="saisie-qte" value="1" />
+        </label>
+        <label>Prix Unitaire (FCFA)
+          <input type="number" id="saisie-pu" value="0" />
+        </label>
+        <div style="display:flex; align-items:flex-end;">
+          <button class="btn btn-primaire" onclick="ajouterLigneDevis()">➕ Ajouter au devis</button>
+        </div>
+      </div>
 
-<section id="tab-company" class="tab">
- <h2>Paramètres de l'entreprise et identité du devis</h2><p class="sub">Renseignez une seule fois les informations qui apparaîtront sur les documents KCS. Les champs administratifs restent vides tant qu'ils ne sont pas confirmés.</p>
- <div class="grid">
-  <div class="card s7"><h3>Informations légales et commerciales</h3><div class="fields">
-   <div class="field"><label>Dénomination officielle</label><input id="coName" value="KAMBOU CONSTRUCTIONS SERVICE SARLU"></div><div class="field"><label>Nom commercial / marque</label><input id="coBrand" value="KCS"></div>
-   <div class="field"><label>RCCM</label><input id="coRccm" placeholder="À renseigner selon document officiel"></div><div class="field"><label>Compte contribuable (CC)</label><input id="coCc" placeholder="À renseigner après confirmation officielle"></div>
-   <div class="field"><label>Adresse</label><input id="coAddress" value="Bingerville, en face du centre de santé urbain de Gbagba"></div><div class="field"><label>Téléphone</label><input id="coPhone" value="0759303070"></div>
-   <div class="field"><label>Email</label><input id="coEmail" value="sienoekambou@gmail.com"></div><div class="field"><label>Site / réseaux sociaux</label><input id="coWeb" placeholder="Lien du site ou page professionnelle"></div>
-   <div class="field"><label>Banque / Mobile Money (facultatif)</label><input id="coPayment" placeholder="Coordonnées de paiement"></div><div class="field"><label>Devise</label><select id="coCurrency"><option>FCFA</option></select></div>
-  </div><div class="field" style="margin-top:10px"><label>Slogan / spécialités</label><input id="coTagline" value="KCS – Construire avec confiance, gérer avec rigueur"></div><div class="actions"><button onclick="saveCompany()">Enregistrer les paramètres</button></div></div>
-  <div class="card s5"><h3>Logo de l'entreprise</h3><div class="note">Importez le logo KCS (PNG, JPG ou SVG). Il sera intégré aux devis sur cet appareil.</div><input type="file" accept="image/*" onchange="uploadLogo(event)"><div style="margin-top:12px"><img id="logoPreview" class="logo-preview hidden"></div><button class="secondary" style="margin-top:10px" onclick="removeLogo()">Retirer le logo</button><div class="note green">Les informations et le logo restent enregistrés localement dans le navigateur.</div></div>
- </div>
-</section>
+      <!-- ZONE IMPRIMABLE DU DEVIS (1 à 2 PAGES) -->
+      <div id="apercu-devis">
+        <img id="image-filigrane-devis" alt="Plan en filigrane" />
+        <div class="contenu-devis">
+          <div style="display:flex; justify-content:space-between; border-bottom:2px solid var(--bleu-fonce); padding-bottom:8px;">
+            <div>
+              <h2 style="margin:0; color:var(--bleu-fonce);">KCS CHARPENTE PRO CI</h2>
+              <small>Abidjan, Côte d'Ivoire • Étude, Charpente Métallique & Bois, Couverture</small>
+            </div>
+            <div style="text-align:right;">
+              <strong>DEVIS ESTIMATIF & QUANTITATIF</strong><br/>
+              <small id="date-devis"></small>
+            </div>
+          </div>
 
-<section id="tab-history" class="tab">
- <h2>Historique et sauvegarde</h2><p class="sub">Les projets, catalogues et réglages sont conservés sur l'appareil. Faites une sauvegarde JSON régulièrement pour transférer ou protéger vos données.</p>
- <div class="card"><div class="actions"><button class="secondary" onclick="renderHistory()">Actualiser</button><button onclick="backup()">Télécharger sauvegarde complète</button><button class="red" onclick="clearHistory()">Effacer l'historique</button></div><div class="tablewrap"><table id="historyTable"><thead><tr><th>Référence</th><th>Client</th><th>Modèle</th><th>Système</th><th class="num">Surface m²</th><th>Date</th><th>Actions</th></tr></thead><tbody></tbody></table></div></div>
-</section>
+          <img id="image-banniere-devis" alt="Plan en bannière" />
 
-<section id="tab-resources" class="tab">
- <h2>Références techniques et aide</h2><p class="sub">Liens externes utiles. Ils nécessitent une connexion Internet. Les documents fabricant propres au produit utilisé restent prioritaires.</p>
- <div class="grid">
-  <div class="card s6"><h3>Réglementation et construction en Côte d'Ivoire</h3><p><a target="_blank" rel="noopener" href="https://www.construction.gouv.ci/index.php/publications/sous-categorie/lois-6">Ministère de la Construction – textes légaux</a></p><p><a target="_blank" rel="noopener" href="https://www.economie-ivoirienne.ci/investissements/codes-sectoriels.html">Code de la Construction et de l'Habitat – portail économique ivoirien</a></p><p><a target="_blank" rel="noopener" href="https://www.economie-ivoirienne.ci/sites/default/files/sites/default/files/inline-files/D%C3%A9cret%20N%C2%B02019-594%20du%2003-07-19%20portant%20R%C3%A9glementation%20du%20permis%20de%20construire.pdf">Décret n°2019-594 – contrôle des constructions (PDF)</a></p><div class="note red">Le cadre réglementaire ivoirien prévoit des exigences de contrôle technique pour les constructions. Vérifiez le texte applicable à la classe de votre projet et faites intervenir les professionnels requis.</div></div>
-  <div class="card s6"><h3>Inspirations et catalogues visuels</h3><p><a target="_blank" rel="noopener" href="https://www.pinterest.com/search/pins/?q=charpente%20bois%20toiture">Pinterest – charpentes bois et toitures</a></p><p><a target="_blank" rel="noopener" href="https://www.pinterest.com/search/pins/?q=roof%20truss%20design">Pinterest – fermes et assemblages de toiture</a></p><p>Vous pouvez importer les images de référence dans l'atelier dessin. Respectez les droits d'auteur des images et plans réutilisés.</p></div>
-  <div class="card s6"><h3>Actions climatiques et couverture</h3><p><a target="_blank" rel="noopener" href="https://eurocodes.jrc.ec.europa.eu/EN-Eurocodes/eurocode-1-actions-structures">JRC – Eurocode 1 : actions sur les structures</a></p><p><a target="_blank" rel="noopener" href="https://eurocodes.jrc.ec.europa.eu/sites/default/files/2025-08/2025_2G-Eurocodes-Workshop_EN%201991_MStacy_website_0.pdf">JRC – présentation des actions du vent EN 1991-1-4 (PDF)</a></p><p><a target="_blank" rel="noopener" href="https://www.ffbatiment.fr/techniques-batiment/enveloppe-du-batiment/couverture/dossier/couverture-bac-acier">Guide technique – couverture bac acier et conditions de pose</a></p><div class="note">Les règles étrangères ne s'appliquent pas automatiquement telles quelles en Côte d'Ivoire. Confirmer les normes, annexes nationales, données climatiques et prescriptions de l'ingénieur compétent.</div></div>
-  <div class="card s12"><h3>Ce que l'application calcule et ce qu'elle ne certifie pas</h3><ul><li>Elle calcule des surfaces géométriques simplifiées, rampants, pentes, quantités indicatives, longueurs de matériaux et totaux financiers.</li><li>Elle aide à organiser un plan, les nomenclatures et les devis.</li><li>Elle ne calcule pas encore les contraintes, moments, efforts de vent spécifiques au site, flèches, stabilité, résistance des assemblages, ancrages ni dimensionnement réglementaire des sections.</li><li>Une mention « faisabilité à vérifier » n'est pas une probabilité de solidité. Les sections porteuses doivent être validées par un ingénieur-conseil / bureau de contrôle selon le projet.</li></ul></div>
- </div>
-</section>
-</main>
-<footer>KCS CHARPENTE PRO CI – Version 2.0 locale • Interface responsive • Fonctionnement hors connexion après téléchargement</footer>
+          <table id="table-devis">
+            <thead>
+              <tr>
+                <th>Désignation</th>
+                <th>Unité</th>
+                <th>Qté</th>
+                <th>P.U (FCFA)</th>
+                <th>Total HT (FCFA)</th>
+                <th class="no-print">Action</th>
+              </tr>
+            </thead>
+            <tbody id="corps-devis"></tbody>
+          </table>
+
+          <div style="margin-top:14px; display:flex; justify-content:flex-end;">
+            <table style="width:320px;">
+              <tr><th>Sous-total Matériaux</th><td id="total-ht">0 FCFA</td></tr>
+              <tr><th>Imprévus (<span id="lbl-imprevu">5</span>%)</th><td id="montant-imprevu">0 FCFA</td></tr>
+              <tr><th>Marge & Main d'œuvre (<span id="lbl-marge">20</span>%)</th><td id="montant-marge">0 FCFA</td></tr>
+              <tr style="background:#dbeafe; font-size:15px;"><th>NET À PAYER (TTC)</th><td id="total-ttc"><strong>0 FCFA</strong></td></tr>
+            </table>
+          </div>
+
+          <div class="no-print" style="margin-top:14px; text-align:right;">
+            <button class="btn btn-succes" onclick="window.print()">🖨️ Imprimer / Enregistrer en PDF (1-2 pages)</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ONGLET 3 : CATALOGUE MATÉRIAUX -->
+    <section id="section-catalogue" class="panneau section-cachee">
+      <h3>📦 Catalogue Prix & Matériaux (Côte d'Ivoire)</h3>
+      <div class="grille-form">
+        <label>Nom du matériau
+          <input type="text" id="cat-nom" placeholder="Ex: Tôle Bac Aluzinc 0.45mm" />
+        </label>
+        <label>Unité
+          <input type="text" id="cat-unite" placeholder="m² / barre / pièce" />
+        </label>
+        <label>Prix unitaire (FCFA)
+          <input type="number" id="cat-prix" placeholder="4500" />
+        </label>
+        <div style="display:flex; align-items:flex-end;">
+          <button class="btn btn-primaire" onclick="ajouterAuCatalogue()">➕ Enregistrer</button>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Article</th><th>Unité</th><th>Prix Unitaire (FCFA)</th><th>Action</th></tr>
+        </thead>
+        <tbody id="corps-catalogue"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- PANNEAU LATÉRAL : CALCULATEUR & DIAGNOSTIC ESTHÉTIQUE -->
+  <aside class="panneau panneau-lateral">
+    <h3 style="margin-top:0;">📊 Métriques & Diagnostic</h3>
+    <div class="carte-proposition">
+      <div><strong>Emprise au sol :</strong> <span id="stat-surface-sol">144.00 m²</span></div>
+      <div><strong>Surface rampante toiture :</strong> <span id="stat-surface-toit">176.50 m²</span></div>
+      <div><strong>Hauteur faîtage estimée :</strong> <span id="stat-faitage">4400 mm (4.40 m)</span></div>
+      <div><strong>Longueur arêtiers / noues :</strong> <span id="stat-aretiers">0.00 m</span></div>
+      <div class="badge-esthetique" id="badge-esthetique">✨ Équilibre architectural : Optimal</div>
+    </div>
+
+    <h4>💡 Propositions Techniques</h4>
+    <div id="zone-conseils" class="carte-proposition" style="border-left-color: var(--or-kcs);">
+      Renseignez vos dimensions ou tracez votre contour sur la toile pour obtenir le métré automatique.
+    </div>
+
+    <button class="btn btn-primaire" style="width:100%;" onclick="transfererMetreVersDevis()">
+      📋 Générer les lignes du Devis depuis le Plan
+    </button>
+  </aside>
+</div>
 
 <script>
-const $=id=>document.getElementById(id), money=n=>Math.round(Number(n)||0).toLocaleString('fr-FR')+' FCFA', num=n=>Number(n||0).toLocaleString('fr-FR',{maximumFractionDigits:2}), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const KEY='kcs_charpente_v2';
-let state=JSON.parse(localStorage.getItem(KEY)||'{}');
-state.materials ||= [];state.history ||= [];state.company ||= {};state.project ||= {};
-let calc=null, quoteLines=[], currentTool='free', color='#1769aa', scale=1, drawing=false, start=null, liveSnapshot=null, undoStack=[],redoStack=[],savedDrawing=null, imported=null, editMat=-1;
-function persist(){localStorage.setItem(KEY,JSON.stringify(state))}
-function toast(msg){let t=$('toast');if(!t){t=document.createElement('div');t.id='toast';t.style='position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#102d4f;color:#fff;padding:10px 16px;border-radius:9px;z-index:1000;box-shadow:0 5px 20px #0003';document.body.appendChild(t)}t.textContent=msg;t.style.display='block';clearTimeout(window._toastTimer);window._toastTimer=setTimeout(()=>t.style.display='none',2200)}
-function nav(tab){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));$('tab-'+tab).classList.add('active');if(tab==='history')renderHistory();if(tab==='materials')renderMaterials();if(tab==='quote')prepareQuote(false)}
-document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.tab)));
-window.addEventListener('online',()=>setNet(true));window.addEventListener('offline',()=>setNet(false));function setNet(on){$('netStatus').textContent=on?'● Connecté':'● Hors connexion prêt';$('netStatus').classList.toggle('off',!on)}setNet(navigator.onLine);
-const modelDefs=[
- ['gable','Maison rectangulaire – 2 pans','Maison simple, faîtage central.',`<path d="M25 80 L100 25 L175 80" fill="#d9eafa" stroke="#1769aa" stroke-width="4"/><path d="M25 80V135H175V80" fill="#f1dfc7" stroke="#8b6546" stroke-width="3"/><path d="M100 25V80" stroke="#1769aa" stroke-dasharray="4 3"/>`],
- ['hip','Maison carrée – 4 pans','Toiture en croupe / pavillon.',`<path d="M25 75L100 25L175 75L100 105Z" fill="#d9eafa" stroke="#1769aa" stroke-width="3"/><path d="M25 75V130H175V75" fill="#f1dfc7" stroke="#8b6546" stroke-width="3"/><path d="M100 25V105M25 75L100 75L175 75" stroke="#1769aa" stroke-dasharray="4 3"/>`],
- ['mono','Maison – monopente','Un seul versant.',`<path d="M25 50L175 25V95L25 115Z" fill="#d9eafa" stroke="#1769aa" stroke-width="4"/><path d="M25 115V140H175V95" fill="#f1dfc7" stroke="#8b6546" stroke-width="3"/>`],
- ['L','Maison décalée en L','Deux volumes à raccorder.',`<path d="M30 35H110V75H175V140H30Z" fill="#f1dfc7" stroke="#8b6546" stroke-width="3"/><path d="M30 35L110 15L150 45L110 75L70 55Z" fill="#d9eafa" stroke="#1769aa" stroke-width="3"/><path d="M110 75L175 90L145 120L110 105Z" fill="#c6ddf3" stroke="#1769aa" stroke-width="3"/>`],
- ['T','Maison en T','Volume principal et aile transversale.',`<path d="M20 35H180V80H130V145H70V80H20Z" fill="#f1dfc7" stroke="#8b6546" stroke-width="3"/><path d="M20 35L100 12L180 35M70 80L100 60L130 80" fill="#d9eafa" stroke="#1769aa" stroke-width="3"/>`],
- ['courtyard','Maison à cour intérieure','Toiture périphérique et cour ouverte.',`<path d="M25 25H175V145H25Z" fill="#d9eafa" stroke="#1769aa" stroke-width="4"/><path d="M65 55H135V115H65Z" fill="#fff" stroke="#1769aa" stroke-width="3"/><path d="M25 25L65 55M175 25L135 55M25 145L65 115M175 145L135 115" stroke="#1769aa" stroke-width="3"/>`],
- ['pergola_bois','Pergola bois','Poteaux, poutres et chevrons apparents.',`<path d="M30 50V140M170 50V140M20 50H180M35 35H165M45 35V50M70 35V50M95 35V50M120 35V50M145 35V50" stroke="#8b6546" stroke-width="7" fill="none"/>`],
- ['pergola_metal','Pergola métallique','Structure acier, tubes et platines.',`<path d="M30 50V140M170 50V140M20 50H180M30 35H170M45 35V50M70 35V50M95 35V50M120 35V50M145 35V50" stroke="#596b7c" stroke-width="5" fill="none"/><path d="M25 140H40M165 140H180" stroke="#d69c27" stroke-width="7"/>`],
- ['mansard','Toiture mansardée','Deux pentes brisées par versant.',`<path d="M25 85L55 30L100 18L145 30L175 85" fill="#d9eafa" stroke="#1769aa" stroke-width="4"/><path d="M25 85V140H175V85" fill="#f1dfc7" stroke="#8b6546" stroke-width="3"/>`],
- ['complex','Toiture multi-pans','Volumes à décomposer par versants.',`<path d="M20 75L70 30L115 50L165 20L190 75L145 115L65 115Z" fill="#d9eafa" stroke="#1769aa" stroke-width="3"/><path d="M20 75L65 115M70 30L100 80L115 50M165 20L100 80L190 75M100 80L145 115" stroke="#1769aa" stroke-width="2"/>`],
- ['metal','Ferme métallique','Treillis de ferme à faire dimensionner.',`<path d="M20 120L100 25L180 120M20 120H180M60 72H140M60 72L60 120M140 72L140 120M60 72L100 120M140 72L100 120" stroke="#586c80" stroke-width="4" fill="none"/>`],
- ['wood','Ferme traditionnelle bois','Entrait, arbalétriers, poinçon, contrefiches.',`<path d="M20 120L100 25L180 120M20 120H180M100 25V120M60 73L100 95L140 73" stroke="#986b3f" stroke-width="6" fill="none"/>`]
-];
-function svgFor(key){let m=modelDefs.find(x=>x[0]===key)||modelDefs[0];return `<svg viewBox="0 0 200 160" role="img" aria-label="${esc(m[1])}"><rect x="4" y="4" width="192" height="152" rx="8" fill="#f8fbfe"/>${m[3]}</svg>`}
-function renderGallery(){$('gallery').innerHTML=modelDefs.map(m=>`<button class="model" onclick="selectModel('${m[0]}')">${svgFor(m[0])}<b>${m[1]}</b><small>${m[2]}</small></button>`).join('')}
-function selectModel(k){let m=modelDefs.find(x=>x[0]===k);if(!m)return;$('roof').value=['wood','metal'].includes(k)?'gable':k;$('system').value=k==='pergola_bois'?'pergola_bois':k==='pergola_metal'?'pergola_metal':k==='metal'?'metal':k==='wood'?'bois_trad':$('system').value;$('shape').value=k==='L'?'En L':k==='T'?'En T':k==='hip'?'Carrée':k==='courtyard'?'Avec cour intérieure':k==='complex'?'Libre / polygonale':'Rectangulaire';$('modelPreview').innerHTML=svgFor(k)+`<p><b>${m[1]}</b><br><span class="muted">${m[2]}</span></p>`;document.querySelectorAll('.model').forEach(b=>b.classList.remove('selected'));let idx=modelDefs.findIndex(x=>x[0]===k);$('gallery').children[idx]?.classList.add('selected');drawTemplate(k);nav('home');toast('Modèle chargé : '+m[1])}
-renderGallery();$('modelPreview').innerHTML=svgFor('gable');
-function getP(){let f=$('unit').value==='cm'?.01:1;return {pinUrl:$('pinUrl')?.value||'',ref:$('ref').value,client:$('client').value,phone:$('phone').value,location:$('location').value,system:$('system').value,roof:$('roof').value,shape:$('shape').value,cover:$('cover').value,length:val('length')*f,width:val('width')*f,overhang:val('overhang'),wallH:val('wallH'),slope:val('slope')/100,ridge:val('ridge'),trussGap:val('trussGap'),rafterGap:val('rafterGap'),purlinGap:val('purlinGap'),sheetLength:val('sheetLength'),sheetWidth:val('sheetWidth'),overlapL:val('overlapL'),overlapW:val('overlapW'),waste:val('waste'),woodType:$('woodType').value,woodTreatment:$('woodTreatment').value,steelGrade:$('steelGrade').value,ridgeType:$('ridgeType').value}}
-function val(id){return parseFloat($(id).value)||0}function ceil(x){return Math.ceil(x-1e-9)}
-function calculate(){let d=getP();if(d.length<=0||d.width<=0){toast('Saisissez longueur et largeur valides');return}if(d.trussGap<=0||d.rafterGap<=0||d.purlinGap<=0){toast('Les entraxes doivent être supérieurs à zéro');return}
- let L=d.length+2*d.overhang,W=d.width+2*d.overhang,half=W/2,rise=d.ridge>0?d.ridge:half*d.slope,slope=rise/half,angle=Math.atan(slope)*180/Math.PI,ramp=Math.hypot(half,rise),factor=Math.sqrt(1+slope*slope),horizontal=L*W,planes=d.roof==='mono'||d.roof==='flat'?1:2,area=horizontal*factor;
- if(d.roof==='mono'){rise=d.ridge>0?d.ridge:W*d.slope;slope=rise/W;angle=Math.atan(slope)*180/Math.PI;ramp=Math.hypot(W,rise);factor=Math.sqrt(1+slope*slope);area=horizontal*factor}
- if(d.roof==='flat'){rise=0;angle=0;ramp=W;factor=1;area=horizontal}
- let trusses=ceil(d.length/d.trussGap)+1,rafters=(ceil(L/d.rafterGap)+1)*planes,purlinRows=ceil(ramp/d.purlinGap)+1,purlinM=L*purlinRows*planes,battenGap=val('battenGap')||.35,battenRows=ceil(ramp/battenGap)+1,battenM=L*battenRows*planes;
- let waste=1+d.waste/100,sheetW=d.sheetWidth-d.overlapW,sheetL=d.sheetLength-d.overlapL,sheets=(sheetW>0&&sheetL>0)?ceil(area/(sheetW*sheetL)*waste):0;
- let tileRate={tile:10,canal:18,flat_tile:35}[d.cover]||0,tiles=tileRate?ceil(area*tileRate*waste):0;
- let complex=['L','T','complex','courtyard','mansard'].includes(d.roof),perg=d.system.startsWith('pergola'),isMetal=['metal','pergola_metal'].includes(d.system);
- let items=[
- ['Fermes / portiques','unité',trusses,'Entraxe '+d.trussGap+' m; structure à vérifier'],
- ['Chevrons / traverses','pièce',rafters,'Estimation géométrique, longueur type '+num(ramp)+' m'],
- ['Pannes','m linéaire',purlinM,purlinRows+' rangées par versant'],
- ['Liteaux / lisses','m linéaire',battenM,battenRows+' rangées par versant (entraxe 0,35 m par défaut)'],
- [tileRate?'Tuiles':'Tôles','pièce',tileRate?tiles:sheets, tileRate?tileRate+' unités/m² indicatif':'Tôle '+d.sheetLength+'×'+d.sheetWidth+' m, recouvrements déduits'],
- ['Faîtière','m linéaire',d.roof==='mono'||d.roof==='flat'?0:L,'À confirmer selon forme et détail'],
- ['Rives / arêtiers / noues','m linéaire',0,'Relevé manuel obligatoire sur plan']
- ];
- calc={d,L,W,half,rise,slope,angle,ramp,factor,horizontal,area,planes,trusses,rafters,purlinRows,purlinM,battenRows,battenM,sheets,tiles,items,complex,perg,isMetal};
- renderCalc();saveCurrent(false);toast('Calcul effectué. Contrôlez les hypothèses et les détails.') }
-function renderCalc(){if(!calc)return;let c=calc;$('quickStats').innerHTML=`<p><b>Surface estimée :</b> ${num(c.area)} m²</p><p><b>Rampant type :</b> ${num(c.ramp)} m</p><p><b>Angle :</b> ${num(c.angle)}°</p><p><b>Hauteur de pente :</b> ${num(c.rise)} m</p>`;$('calcOutput').innerHTML=`<div class="kpis"><div class="kpi"><small>Surface horizontale</small><strong>${num(c.horizontal)} m²</strong></div><div class="kpi"><small>Surface inclinée estimée</small><strong>${num(c.area)} m²</strong></div><div class="kpi"><small>Rampant type</small><strong>${num(c.ramp)} m</strong></div><div class="kpi"><small>Angle de pente</small><strong>${num(c.angle)}°</strong></div></div><p>Dimensions hors œuvre toiture : ${num(c.L)} × ${num(c.W)} m • Hauteur calculée : ${num(c.rise)} m • Coefficient pente : ${num(c.factor)}</p>`;
- $('quantityTable').querySelector('tbody').innerHTML=c.items.map(i=>`<tr><td>${i[0]}</td><td>${i[1]}</td><td class="num">${num(i[2])}</td><td class="num">${i[0]==='Chevrons / traverses'?num(c.ramp)+' m':'—'}</td><td>${i[3]}</td></tr>`).join('');
- let alerts=[];if(c.complex)alerts.push('Forme complexe : découper en pans élémentaires, mesurer noues/arêtiers et recalculer chaque pan.');if(c.d.slope<.05&&c.d.cover!=='membrane')alerts.push('Pente très faible : vérifier la compatibilité de la couverture avec la notice fabricant.');if(c.d.slope>1)alerts.push('Pente forte : vérifier stabilité, ancrages et sécurité de pose.');if(c.d.roof==='hip')alerts.push('Toiture à 4 pans : les chevrons d’arêtier et de noue ne sont pas détaillés par ce métré simplifié.');if(c.perg)alerts.push('Pergola : vérifier le drainage, la stabilité latérale, les ancrages au sol et l’exposition au vent.');if(!c.d.woodType&&!c.isMetal)alerts.push('Essence / classe mécanique du bois non renseignée.');if(!c.d.steelGrade&&c.isMetal)alerts.push('Nuance et qualité de l’acier non renseignées.');alerts.push('Aucune résistance structurelle n’est calculée : sections, assemblages, vent et ancrages à faire vérifier par un professionnel qualifié.');
- $('feasibility').innerHTML=alerts.map(a=>'• '+esc(a)).join('<br>')+'<br><br><b>Conclusion :</b> faisabilité géométrique indicative uniquement – validation structurelle requise.';
-}
-function saveCurrent(show=true){let d=getP();state.project={...d,drawing:savedDrawing||state.project.drawing||null,updated:new Date().toISOString()};persist();if(show)toast('Projet sauvegardé automatiquement')}
-function newProject(){if(!confirm('Créer un nouveau projet ? Le précédent restera dans l’historique s’il a été enregistré.'))return;['client','phone','location'].forEach(x=>$(x).value='');$('ref').value='KCS-'+new Date().getFullYear()+'-'+String(state.history.length+1).padStart(3,'0');calc=null;$('quickStats').textContent='Aucun calcul lancé.';$('calcOutput').textContent='Lancez le calcul depuis Projet.';toast('Nouveau projet prêt')}
-function saveHistory(){if(!calc)calculate();if(!calc)return;state.history.unshift({...calc.d,area:calc.area,ramp:calc.ramp,date:new Date().toISOString(),drawing:savedDrawing,materials:state.materials.map(m=>({...m}))});persist();renderHistory();toast('Projet ajouté à l’historique')}
-function renderHistory(){$('historyTable').querySelector('tbody').innerHTML=state.history.length?state.history.map((h,i)=>`<tr><td>${esc(h.ref)}</td><td>${esc(h.client||'—')}</td><td>${esc(h.roof)}</td><td>${esc(h.system)}</td><td class="num">${num(h.area)} m²</td><td>${new Date(h.date).toLocaleDateString('fr-FR')}</td><td><button class="secondary" onclick="loadHistory(${i})">Ouvrir</button> <button class="red" onclick="removeHistory(${i})">×</button></td></tr>`).join(''):'<tr><td colspan="7">Aucun chantier enregistré.</td></tr>'}
-function loadHistory(i){let h=state.history[i];if(!h)return;for(let [k,v] of Object.entries(h)){if($(k)&&typeof v!=='object')$(k).value=v}savedDrawing=h.drawing||null;if(savedDrawing){let im=new Image();im.onload=()=>{ctx.clearRect(0,0,board.width,board.height);ctx.drawImage(im,0,0,board.width,board.height);pushUndo()};im.src=savedDrawing}calculate();nav('home');toast('Projet chargé')}
-function removeHistory(i){if(confirm('Supprimer ce chantier ?')){state.history.splice(i,1);persist();renderHistory()}}
-function clearHistory(){if(confirm('Effacer tout l’historique ?')){state.history=[];persist();renderHistory()}}
-function backup(){let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});download(blob,'KCS_CHARPENTE_PRO_CI_sauvegarde.json');}
-function restore(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x||!Array.isArray(x.history)||!Array.isArray(x.materials))throw 0;state=x;persist();renderHistory();renderMaterials();loadCompany();toast('Sauvegarde restaurée')}catch(err){alert('Fichier invalide')}};r.readAsText(f)}
-function download(blob,name){let a=document.createElement('a'),u=URL.createObjectURL(blob);a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1500)}
-// Canvas / drawing tools
-const board=$('board'),ctx=board.getContext('2d');let boardBg='#fff',baseImage=null;
-function initBoard(){ctx.fillStyle=boardBg;ctx.fillRect(0,0,board.width,board.height);let g=Number($('gridMode')?.value||40);if(g){ctx.strokeStyle='#e8edf3';ctx.lineWidth=1;for(let x=0;x<board.width;x+=g){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,board.height);ctx.stroke()}for(let y=0;y<board.height;y+=g){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(board.width,y);ctx.stroke()}}}
-function redraw(){boardBg=$('canvasBg')?.value||'#fff';initBoard();if(baseImage)ctx.drawImage(baseImage,0,0,board.width,board.height);if(liveSnapshot){let im=new Image();im.onload=()=>ctx.drawImage(im,0,0,board.width,board.height);im.src=liveSnapshot}}
-function pushUndo(){try{undoStack.push(board.toDataURL());if(undoStack.length>40)undoStack.shift();redoStack=[]}catch(e){}}
-function restoreCanvas(data){let im=new Image();im.onload=()=>{ctx.clearRect(0,0,board.width,board.height);ctx.drawImage(im,0,0,board.width,board.height)};im.src=data}
-function undo(){if(!undoStack.length){toast('Aucune action à annuler');return}redoStack.push(board.toDataURL());restoreCanvas(undoStack.pop())}
-function redo(){if(!redoStack.length){toast('Aucune action à rétablir');return}undoStack.push(board.toDataURL());restoreCanvas(redoStack.pop())}
-function tool(t){currentTool=t;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('active',b.dataset.tool===t))}
-function setColor(c){color=c;document.querySelectorAll('.swatch').forEach(b=>b.classList.toggle('active',b.dataset.color===c));$('customColor').value=c}
-let palette=['#1769aa','#102d4f','#168c82','#d89b22','#c0392b','#6d4c9a','#111827','#64748b','#ffffff','#8b6546'];
-$('palette').innerHTML=palette.map(c=>`<button class="swatch ${c===color?'active':''}" style="background:${c}" data-color="${c}" onclick="setColor('${c}')" title="${c}"></button>`).join('');
-function pt(e){let r=board.getBoundingClientRect();return {x:(e.clientX-r.left)*board.width/r.width,y:(e.clientY-r.top)*board.height/r.height}}
-function drawStart(e){e.preventDefault();board.setPointerCapture(e.pointerId);pushUndo();drawing=true;start=pt(e);ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=Number($('lineWidth').value)||4;ctx.globalAlpha=(Number($('opacity').value)||100)/100;ctx.lineCap='round';ctx.lineJoin='round';
- if(currentTool==='text'){let s=$('annotation').value||'Annotation';ctx.font=`bold ${Math.max(18,ctx.lineWidth*5)}px Arial`;ctx.fillText(s,start.x,start.y);drawing=false;ctx.globalAlpha=1;return}
- if(currentTool==='free'||currentTool==='erase'){ctx.beginPath();ctx.moveTo(start.x,start.y)}}
-function drawMove(e){if(!drawing)return;e.preventDefault();let p=pt(e);if(currentTool==='free'||currentTool==='erase'){ctx.strokeStyle=currentTool==='erase'?boardBg:color;ctx.lineWidth=currentTool==='erase'?35:Number($('lineWidth').value)||4;ctx.lineTo(p.x,p.y);ctx.stroke()}}
-function drawEnd(e){if(!drawing)return;let p=pt(e);ctx.globalAlpha=(Number($('opacity').value)||100)/100;ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=Number($('lineWidth').value)||4;ctx.beginPath();
- if(currentTool==='line'){ctx.moveTo(start.x,start.y);ctx.lineTo(p.x,p.y);ctx.stroke()}
- if(currentTool==='rect'){ctx.strokeRect(start.x,start.y,p.x-start.x,p.y-start.y)}
- if(currentTool==='circle'){let rx=(p.x-start.x)/2,ry=(p.y-start.y)/2;ctx.ellipse(start.x+rx,start.y+ry,Math.abs(rx),Math.abs(ry),0,0,Math.PI*2);ctx.stroke()}
- if(currentTool==='arrow'){ctx.moveTo(start.x,start.y);ctx.lineTo(p.x,p.y);ctx.stroke();let a=Math.atan2(p.y-start.y,p.x-start.x),h=18;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-h*Math.cos(a-.5),p.y-h*Math.sin(a-.5));ctx.lineTo(p.x-h*Math.cos(a+.5),p.y-h*Math.sin(a+.5));ctx.closePath();ctx.fill()}
- if(currentTool==='dim'){ctx.moveTo(start.x,start.y);ctx.lineTo(p.x,p.y);ctx.stroke();let midx=(start.x+p.x)/2,midy=(start.y+p.y)/2;ctx.font='bold 22px Arial';let pxm=Math.max(1,val('drawScale')||50),metres=Math.hypot(p.x-start.x,p.y-start.y)/pxm;ctx.fillText($('annotation').value||`${num(metres)} m`,midx+8,midy-8)}
- if(currentTool==='line'){let pxm=Math.max(1,val('drawScale')||50),metres=Math.hypot(p.x-start.x,p.y-start.y)/pxm;ctx.font='bold 20px Arial';ctx.fillText(`${num(metres)} m`,(start.x+p.x)/2+8,(start.y+p.y)/2-8)}
- if(currentTool==='rect'){let pxm=Math.max(1,val('drawScale')||50),w=Math.abs(p.x-start.x)/pxm,h=Math.abs(p.y-start.y)/pxm;ctx.font='bold 20px Arial';ctx.fillText(`${num(w)} m × ${num(h)} m`,Math.min(start.x,p.x)+8,Math.min(start.y,p.y)-8)}
- ctx.globalAlpha=1;drawing=false}
-board.addEventListener('pointerdown',drawStart);board.addEventListener('pointermove',drawMove);board.addEventListener('pointerup',drawEnd);board.addEventListener('pointercancel',()=>drawing=false);
-function clearDrawing(){if(confirm('Effacer le croquis ?')){pushUndo();baseImage=null;liveSnapshot=null;initBoard();savedDrawing=null;$('imageInfo').textContent='Aucune image importée.'}}
-function zoomBy(f){scale=Math.max(.5,Math.min(3,scale*f));board.style.transform=`scale(${scale})`;board.style.transformOrigin='top left';board.parentElement.style.overflow='auto'}
-function resetZoom(){scale=1;board.style.transform='none';board.parentElement.style.overflow='hidden'}
-function importImage(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{let im=new Image();im.onload=()=>{pushUndo();baseImage=im;redraw();$('imageInfo').textContent=f.name+' – fond de dessin chargé. Échelle à confirmer.'};im.src=r.result};r.readAsDataURL(f);e.target.value=''}
-function drawTemplate(key){pushUndo();baseImage=null;initBoard();ctx.save();ctx.translate(170,110);ctx.scale(5,4);let m=modelDefs.find(x=>x[0]===key)||modelDefs[0];let parser=new DOMParser(),doc=parser.parseFromString(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160">${m[3]}</svg>`,'image/svg+xml');let svg=new XMLSerializer().serializeToString(doc.documentElement);let im=new Image();im.onload=()=>{ctx.drawImage(im,0,0);ctx.restore();savedDrawing=board.toDataURL()};im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)}
-function saveDrawing(){savedDrawing=board.toDataURL();state.project.drawing=savedDrawing;persist();toast('Dessin enregistré au projet')}
-function downloadDrawing(){board.toBlob(b=>download(b,'KCS_croquis_charpente.png'))}
-function updateScaleHint(){let v=Math.max(1,val('drawScale')||50);$('scaleHint').textContent='1 m = '+v+' pixels. Les cotes de lignes et rectangles suivront cette échelle.'}
-function openPinterest(){let q=encodeURIComponent('charpente bois toiture construction');window.open('https://www.pinterest.com/search/pins/?q='+q,'_blank','noopener')}
-initBoard();
-// Calculator
-let expr='0';const keys=['7','8','9','÷','4','5','6','×','1','2','3','−','0','.','C','+','⌫','(',')','='];$('keypad').innerHTML=keys.map(k=>`<button class="${['÷','×','−','+'].includes(k)?'op':k==='='?'eq':''}" onclick="keyCalc('${k}')">${k}</button>`).join('');
-function keyCalc(k){if(k==='C')expr='0';else if(k==='⌫')expr=expr.length>1?expr.slice(0,-1):'0';else if(k==='='){try{let safe=expr.replaceAll('×','*').replaceAll('÷','/').replaceAll('−','-');if(!/^[0-9+*/().\-\s]+$/.test(safe))throw 0;let result=Function('"use strict";return ('+safe+')')();if(!Number.isFinite(result))throw 0;expr=String(Math.round(result*1e8)/1e8)}catch(e){expr='Erreur'}}else expr=expr==='0'?k:expr+k;$('calcDisplay').textContent=expr}
-// Materials
-function addMaterial(){let n=$('mName').value.trim();if(!n){toast('Saisissez une désignation');return}let old=editMat>=0?state.materials[editMat]:{};let file=$('mImage').files[0];let commit=img=>{let obj={...old,id:old.id||Date.now(),name:n,cat:$('mCat').value,section:$('mSection').value,length:val('mLength'),width:val('mWidth'),thickness:val('mThickness'),quality:$('mQuality').value,priceType:$('mPriceType').value,unit:$('mUnit').value,price:val('mPrice'),supplier:$('mSupplier').value,ref:$('mRef').value,weight:val('mWeight'),notes:$('mNotes').value,image:img||old.image||''};if(editMat>=0)state.materials[editMat]=obj;else state.materials.push(obj);editMat=-1;persist();renderMaterials();clearMaterialForm();toast('Matériel enregistré avec ses caractéristiques')};if(file){let rr=new FileReader();rr.onload=()=>commit(rr.result);rr.readAsDataURL(file)}else commit(old.image)}
-function clearMaterialForm(){['mName','mSection','mLength','mWidth','mThickness','mQuality','mPrice','mSupplier','mRef','mWeight','mNotes','mImage'].forEach(x=>$(x).value='');$('mPriceType').value="Prix d'achat";editMat=-1}
-function editMaterial(i){let m=state.materials[i];editMat=i;let map={mName:m.name,mCat:m.cat,mSection:m.section,mLength:m.length,mWidth:m.width,mThickness:m.thickness,mQuality:m.quality,mPriceType:m.priceType,mUnit:m.unit,mPrice:m.price,mSupplier:m.supplier,mRef:m.ref,mWeight:m.weight,mNotes:m.notes};Object.entries(map).forEach(([k,v])=>$(k).value=v??'');nav('materials')}
-function deleteMaterial(i){if(confirm('Supprimer cet article ?')){state.materials.splice(i,1);persist();renderMaterials()}}
-function renderMaterials(){$('materialCount').textContent=state.materials.length+' articles';$('matTable').querySelector('tbody').innerHTML=state.materials.length?state.materials.map((m,i)=>`<tr><td>${m.image?`<img src="${m.image}" alt="" style="width:48px;height:38px;object-fit:cover;border-radius:6px;vertical-align:middle;margin-right:7px">`:``}<b>${esc(m.name)}</b><br><small>${esc(m.section||'')}</small></td><td>${esc(m.cat)}</td><td>${m.length?num(m.length)+' m':'—'}<br><small>${m.width||'—'} × ${m.thickness||'—'} mm • ${esc(m.quality||'qualité à préciser')}</small></td><td>${esc(m.unit)}<br><small>${esc(m.priceType||'Prix')}</small></td><td><input type="number" min="0" style="width:105px" value="${m.price||0}" onchange="state.materials[${i}].price=Number(this.value)||0;persist()"></td><td>${esc(m.supplier||'—')}</td><td><button class="secondary" onclick="editMaterial(${i})">Modifier</button> <button class="red" onclick="deleteMaterial(${i})">×</button></td></tr>`).join(''):'<tr><td colspan="7">Catalogue vide. Ajoutez les matériaux réellement utilisés.</td></tr>'}
-function seedMaterials(){if(state.materials.length&&!confirm('Ajouter les exemples à votre catalogue existant ?'))return;let arr=[
- ['Chevron bois','Bois massif','63×75 mm',6,'mètre linéaire',0],['Panne bois','Bois massif','75×225 mm',6,'mètre linéaire',0],['Chevron bois','Bois massif','75×100 mm',6,'mètre linéaire',0],['Tube carré acier','Tube acier','40×40×2 mm',6,'barre',0],['Tube rectangulaire','Tube acier','80×40×2 mm',6,'barre',0],['Cornière acier','Profilé acier','40×40×4 mm',6,'barre',0],['Fer rond lisse','Fer rond / barre','Ø8 mm',12,'barre',0],['Fer rond lisse','Fer rond / barre','Ø10 mm',12,'barre',0],['Fer rond lisse','Fer rond / barre','Ø12 mm',12,'barre',0],['Tôle bac acier','Tôle / couverture','Largeur utile à confirmer',3,'pièce',0],['Faîtière bac acier','Faîtière / rive / noue','Longueur selon fabricant',2,'pièce',0],['Vis autoperceuse','Visserie / fixation','Avec rondelle EPDM',0,'pièce',0],['Peinture antirouille','Peinture / protection','Selon fiche technique',0,'litre',0]
- ];arr.forEach((a,i)=>state.materials.push({id:Date.now()+i,name:a[0],cat:a[1],section:a[2],length:a[3],unit:a[4],price:a[5],supplier:'À renseigner',ref:'',weight:0,notes:'Exemple de catalogue, prix à renseigner'}));persist();renderMaterials();toast('Exemples ajoutés. Complétez les prix et fiches.')}
-function exportMaterials(){let rows=[['Désignation','Famille','Section','Longueur','Largeur mm','Épaisseur mm','Qualité','Type prix','Unité','Prix FCFA','Fournisseur','Référence'],...state.materials.map(m=>[m.name,m.cat,m.section,m.length,m.width,m.thickness,m.quality,m.priceType,m.unit,m.price,m.supplier,m.ref])];download(new Blob([rows.map(r=>r.map(x=>'"'+String(x??'').replaceAll('"','""')+'"').join(';')).join('\n')],{type:'text/csv;charset=utf-8'}),'catalogue_KCS.csv')}
-// Company
-const companyFields=['coName','coBrand','coRccm','coCc','coAddress','coPhone','coEmail','coWeb','coPayment','coCurrency','coTagline'];
-function saveCompany(){companyFields.forEach(k=>state.company[k]=$(k).value);persist();loadCompany();toast('Informations entreprise enregistrées')}
-function loadCompany(){companyFields.forEach(k=>{if(state.company[k]!==undefined)$(k).value=state.company[k]});if(state.company.logo){$('logoPreview').src=state.company.logo;$('logoPreview').classList.remove('hidden');$('brandMark').innerHTML='<img src="'+state.company.logo+'" style="max-width:42px;max-height:42px;object-fit:contain">'}else $('brandMark').textContent='KCS'}
-function uploadLogo(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{state.company.logo=r.result;persist();loadCompany();toast('Logo enregistré')};r.readAsDataURL(f)}
-function removeLogo(){delete state.company.logo;persist();loadCompany()}
-loadCompany();
-// Quote
-function prepareQuote(reset=true){if(!calc)calculate();if(!calc)return;if(reset||!quoteLines.length){quoteLines=[];if($('qAutoLines').value==='yes'){let c=calc;quoteLines.push({name:'Charpente – fabrication et pose ('+c.d.system+')',unit:'forfait',qty:1,price:0},{name:'Couverture – '+c.d.cover,unit:'m²',qty:Number(c.area.toFixed(2)),price:0},{name:'Accessoires, faîtières, rives, fixations',unit:'lot',qty:1,price:0},{name:'Traitement / peinture de protection',unit:'lot',qty:1,price:0},{name:'Transport et manutention',unit:'forfait',qty:1,price:0})}}
- renderQuote();toast('Devis préparé – complétez les prix unitaires')}
-function addQuoteLine(){quoteLines.push({name:'Nouvelle prestation',unit:'unité',qty:1,price:0});renderQuote()}
-function renderQuote(){let c=calc?.d||getP(),co=state.company;$('qCompany').textContent=co.coName||'KAMBOU CONSTRUCTIONS SERVICE SARLU';$('qTagline').textContent=co.coTagline||'KCS';$('qCompanyInfo').innerHTML=[co.coAddress,co.coPhone,co.coEmail,co.coRccm?'RCCM : '+co.coRccm:'',co.coCc?'CC : '+co.coCc:''].filter(Boolean).map(esc).join('<br>');if(co.logo){$('qLogo').src=co.logo;$('qLogo').classList.remove('hidden')}else $('qLogo').classList.add('hidden');$('qRef').textContent=c.ref||'KCS-DEVIS';$('qDate').textContent=new Date().toLocaleDateString('fr-FR');$('qValidityText').textContent='Validité : '+val('qValidity')+' jours';$('qClientText').textContent=c.client||'—';$('qPhoneText').textContent=c.phone||'—';$('qLocationText').textContent=c.location||'—';$('qObjectText').textContent=$('qObject').value;$('qSignerText').textContent=$('qSigner').value;
- $('quoteTable').querySelector('tbody').innerHTML=quoteLines.map((l,i)=>`<tr><td><input class="no-print" style="width:100%;min-width:150px" value="${esc(l.name)}" onchange="quoteLines[${i}].name=this.value"><span class="print-only">${esc(l.name)}</span></td><td>${esc(l.unit)}</td><td class="num"><input class="no-print" type="number" min="0" step=".01" style="width:75px" value="${l.qty}" onchange="quoteLines[${i}].qty=Number(this.value)||0;renderQuoteTotals()"><span class="print-only">${num(l.qty)}</span></td><td class="num"><input class="no-print" type="number" min="0" style="width:100px" value="${l.price}" onchange="quoteLines[${i}].price=Number(this.value)||0;renderQuoteTotals()"><span class="print-only">${money(l.price)}</span></td><td class="num">${money(l.qty*l.price)}</td><td class="no-print"><button class="red" onclick="quoteLines.splice(${i},1);renderQuote()">×</button></td></tr>`).join('');
- $('qDrawing').classList.add('hidden');if($('qIncludeDrawing').value==='yes'&&savedDrawing){$('qDrawing').src=savedDrawing;$('qDrawing').classList.remove('hidden')}renderQuoteTotals()}
-function renderQuoteTotals(){let sub=quoteLines.reduce((s,l)=>s+(Number(l.qty)||0)*(Number(l.price)||0),0),oh=sub*val('qOverhead')/100,mar=(sub+oh)*val('qMargin')/100,disc=val('qDiscount'),base=Math.max(0,sub+oh+mar-disc),tax=base*val('qTax')/100,total=base+tax;$('quoteTotal').innerHTML=`<table><tr><td>Sous-total</td><td class="num">${money(sub)}</td></tr><tr><td>Frais généraux</td><td class="num">${money(oh)}</td></tr><tr><td>Marge</td><td class="num">${money(mar)}</td></tr><tr><td>Remise</td><td class="num">− ${money(disc)}</td></tr><tr><td>Taxes</td><td class="num">${money(tax)}</td></tr><tr><th>TOTAL À PAYER</th><th class="num">${money(total)}</th></tr></table>`;$('quoteWords').textContent=money(total)}
-function exportQuote(){let rows=[['Désignation','Unité','Quantité','Prix unitaire FCFA','Total FCFA'],...quoteLines.map(l=>[l.name,l.unit,l.qty,l.price,l.qty*l.price])];download(new Blob([rows.map(r=>r.join(';')).join('\n')],{type:'text/csv;charset=utf-8'}),'devis_KCS.csv')}
-$('qObject').addEventListener('input',()=>{$('qObjectText').textContent=$('qObject').value});
-['qTax','qOverhead','qMargin','qDiscount','qValidity','qSigner','qIncludeDrawing'].forEach(id=>$(id).addEventListener('change',()=>{if(quoteLines.length)renderQuote()}));
-// Autosave form fields
-document.querySelectorAll('#tab-home input,#tab-home select').forEach(el=>el.addEventListener('change',()=>{state.project=getP();persist()}));
-renderMaterials();renderHistory();loadCompany();
+  // --- ÉTAT GLOBAL DE L'APPLICATION ---
+  let outilActif = 'ligne';
+  let traits = [];
+  let enCoursDeDessin = false;
+  let pointDepart = null;
+  let pointActuel = null;
+  let planVerrouille = false;
+
+  let catalogue = JSON.parse(localStorage.getItem('kcs_catalogue')) || [
+    { nom: "Tôle Bac Aluzinc 0.45mm", unite: "m²", prix: 4800 },
+    { nom: "Chevron Bois Rouge 6x8 (4m)", unite: "barre", prix: 3500 },
+    { nom: "Panne Bois 8x11 (4m)", unite: "barre", prix: 5500 },
+    { nom: "Tube Rectangulaire 80x40x2mm (6m)", unite: "barre", prix: 16500 },
+    { nom: "Tube Carré 40x40x1.5mm (6m)", unite: "barre", prix: 9500 },
+    { nom: "Faîtière Aluzinc (2m)", unite: "pièce", prix: 4200 },
+    { nom: "Vis autoforeuse avec rondelle (boîte 100)", unite: "boîte", prix: 3500 },
+    { nom: "Bande d'étanchéité bitumineuse", unite: "rouleau", prix: 12000 }
+  ];
+
+  let lignesDevis = JSON.parse(localStorage.getItem('kcs_devis')) || [];
+
+  const canvas = document.getElementById('zone-toile');
+  const ctx = canvas.getContext('2d');
+
+  function redimensionnerCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = 480;
+    dessinerToile();
+  }
+  window.addEventListener('resize', redimensionnerCanvas);
+
+  // --- NAVIGATION ONGLETS ---
+  function changerOnglet(id, btn) {
+    document.querySelectorAll('main > section').forEach(s => s.classList.add('section-cachee'));
+    document.getElementById('section-' + id).classList.remove('section-cachee');
+    document.querySelectorAll('.onglet').forEach(o => o.classList.remove('actif'));
+    btn.classList.add('actif');
+    if (id === 'devis') {
+      mettreAJourImageDevis();
+      actualiserCalculDevis();
+    }
+  }
+
+  // --- OUTILS CAO & AIMANTATION REVIT ---
+  function choisirOutil(outil) {
+    if (planVerrouille) {
+      alert("Le plan est verrouillé pour le devis. Déverrouillez-le pour modifier le dessin.");
+      return;
+    }
+    outilActif = outil;
+    document.querySelectorAll('.outils-dessin .btn').forEach(b => b.classList.remove('actif'));
+    const el = document.getElementById('outil-' + outil);
+    if (el) el.classList.add('actif');
+  }
+
+  function aimanterAngle(p1, p2) {
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    const dist = Math.hypot(dx, dy);
+    if (dist < 5) return p2;
+    const angle = Math.atan2(dy, dx);
+    const pas = Math.PI / 4; // Aimantation 0°, 45°, 90°...
+    const angleSnap = Math.round(angle / pas) * pas;
+    if (Math.abs(angle - angleSnap) < 0.14) {
+      return {
+        x: p1.x + Math.cos(angleSnap) * dist,
+        y: p1.y + Math.sin(angleSnap) * dist
+      };
+    }
+    return p2;
+  }
+
+  function obtenirPositionSouris(e) {
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  }
+
+  canvas.addEventListener('mousedown', demarrerDessin);
+  canvas.addEventListener('mousemove', deplacerDessin);
+  canvas.addEventListener('mouseup', terminerDessin);
+  canvas.addEventListener('touchstart', (e) => { e.preventDefault(); demarrerDessin(e); });
+  canvas.addEventListener('touchmove', (e) => { e.preventDefault(); deplacerDessin(e); });
+  canvas.addEventListener('touchend', (e) => { e.preventDefault(); terminerDessin(e); });
+
+  function demarrerDessin(e) {
+    if (planVerrouille) return;
+    enCoursDeDessin = true;
+    pointDepart = obtenirPositionSouris(e);
+    pointActuel = pointDepart;
+  }
+
+  function deplacerDessin(e) {
+    if (!enCoursDeDessin) return;
+    const brut = obtenirPositionSouris(e);
+    pointActuel = (outilActif === 'ligne') ? aimanterAngle(pointDepart, brut) : brut;
+    dessinerToile();
+  }
+
+  function terminerDessin() {
+    if (!enCoursDeDessin) return;
+    enCoursDeDessin = false;
+    if (Math.hypot(pointActuel.x - pointDepart.x, pointActuel.y - pointDepart.y) > 4) {
+      traits.push({ type: outilActif, p1: pointDepart, p2: pointActuel });
+    }
+    pointDepart = null;
+    pointActuel = null;
+    dessinerToile();
+  }
+
+  function annulerDernierTrait() {
+    if (planVerrouille) return;
+    traits.pop();
+    dessinerToile();
+  }
+
+  function effacerToile() {
+    if (planVerrouille) return;
+    traits = [];
+    dessinerToile();
+  }
+
+  // --- GÉNÉRATION CHARPENTE 4 PANS AUTOMATIQUE ---
+  function genererCharpenteAuto() {
+    if (planVerrouille) return;
+    const L = parseFloat(document.getElementById('bat-longueur').value) || 18000;
+    const l = parseFloat(document.getElementById('bat-largeur').value) || 8000;
+    const debord = parseFloat(document.getElementById('debord-toit').value) || 700;
+    const echelle = parseFloat(document.getElementById('echelle-mm').value) || 25;
+
+    const wPx = (L + 2 * debord) / echelle;
+    const hPx = (l + 2 * debord) / echelle;
+    const x0 = Math.max(40, (canvas.width - wPx) / 2);
+    const y0 = Math.max(40, (canvas.height - hPx) / 2);
+    const x1 = x0 + wPx;
+    const y1 = y0 + hPx;
+
+    traits = [];
+    // Contour débord toiture
+    traits.push({ type: 'rectangle', p1: { x: x0, y: y0 }, p2: { x: x1, y: y1 } });
+
+    // Contour murs intérieurs
+    const dPx = debord / echelle;
+    traits.push({ type: 'patio', p1: { x: x0 + dPx, y: y0 + dPx }, p2: { x: x1 - dPx, y: y1 - dPx } });
+
+    // Arêtiers et faîtage 4 pans
+    const demiH = hPx / 2;
+    if (wPx > hPx) {
+      const f1 = { x: x0 + demiH, y: y0 + demiH };
+      const f2 = { x: x1 - demiH, y: y0 + demiH };
+      traits.push({ type: 'ligne', p1: { x: x0, y: y0 }, p2: f1 });
+      traits.push({ type: 'ligne', p1: { x: x0, y: y1 }, p2: f1 });
+      traits.push({ type: 'ligne', p1: { x: x1, y: y0 }, p2: f2 });
+      traits.push({ type: 'ligne', p1: { x: x1, y: y1 }, p2: f2 });
+      traits.push({ type: 'ligne', p1: f1, p2: f2 });
+    } else {
+      const centre = { x: x0 + wPx / 2, y: y0 + hPx / 2 };
+      traits.push({ type: 'ligne', p1: { x: x0, y: y0 }, p2: centre });
+      traits.push({ type: 'ligne', p1: { x: x1, y: y0 }, p2: centre });
+      traits.push({ type: 'ligne', p1: { x: x0, y: y1 }, p2: centre });
+      traits.push({ type: 'ligne', p1: { x: x1, y: y1 }, p2: centre });
+    }
+    dessinerToile();
+    recalculerTout();
+  }
+
+  // --- RENDU GRAPHIQUE & COTATION MM ---
+  function dessinerToile() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Grille millimétrée légère
+    ctx.strokeStyle = '#f1f5f9';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < canvas.width; x += 20) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+    }
+    for (let y = 0; y < canvas.height; y += 20) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+    }
+
+    traits.forEach(t => tracerElement(t));
+    if (enCoursDeDessin && pointDepart && pointActuel) {
+      tracerElement({ type: outilActif, p1: pointDepart, p2: pointActuel }, true);
+    }
+  }
+
+  function tracerElement(el, apercu = false) {
+    const echelle = parseFloat(document.getElementById('echelle-mm').value) || 25;
+    ctx.save();
+    ctx.lineWidth = apercu ? 1.5 : 2.5;
+    if (apercu) ctx.setLineDash([5, 5]);
+
+    const x = Math.min(el.p1.x, el.p2.x);
+    const y = Math.min(el.p1.y, el.p2.y);
+    const w = Math.abs(el.p2.x - el.p1.x);
+    const h = Math.abs(el.p2.y - el.p1.y);
+
+    if (el.type === 'ligne') {
+      ctx.strokeStyle = '#0f172a';
+      ctx.beginPath(); ctx.moveTo(el.p1.x, el.p1.y); ctx.lineTo(el.p2.x, el.p2.y); ctx.stroke();
+      const distMm = Math.round(Math.hypot(el.p2.x - el.p1.x, el.p2.y - el.p1.y) * echelle);
+      afficherCote(`${distMm} mm (${(distMm / 1000).toFixed(2)} m)`, (el.p1.x + el.p2.x) / 2, (el.p1.y + el.p2.y) / 2 - 6);
+    } else if (el.type === 'rectangle') {
+      ctx.strokeStyle = '#1d4ed8';
+      ctx.strokeRect(x, y, w, h);
+      afficherCote(`${Math.round(w * echelle)} mm`, x + w / 2, y - 6);
+      afficherCote(`${Math.round(h * echelle)} mm`, x + w + 38, y + h / 2);
+    } else if (el.type === 'porte') {
+      ctx.strokeStyle = '#d97706';
+      ctx.strokeRect(x, y, w, h);
+      afficherCote(`Porte ${Math.round(w * echelle)}mm`, x + w / 2, y - 5);
+    } else if (el.type === 'fenetre') {
+      ctx.strokeStyle = '#0284c7';
+      ctx.fillStyle = 'rgba(2, 132, 199, 0.15)';
+      ctx.fillRect(x, y, w, h); ctx.strokeRect(x, y, w, h);
+      afficherCote(`Fenêtre ${Math.round(w * echelle)}mm`, x + w / 2, y - 5);
+    } else if (el.type === 'patio') {
+      ctx.strokeStyle = '#15803d';
+      ctx.setLineDash([6, 4]);
+      ctx.strokeRect(x, y, w, h);
+      afficherCote(`Mur/Patio ${Math.round(w * echelle)}x${Math.round(h * echelle)}mm`, x + w / 2, y + 14);
+    } else if (el.type === 'chienassis') {
+      ctx.strokeStyle = '#9333ea';
+      ctx.strokeRect(x, y, w, h);
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + w / 2, y - 15); ctx.lineTo(x + w, y); ctx.stroke();
+      afficherCote(`Chien-assis`, x + w / 2, y - 18);
+    }
+    ctx.restore();
+  }
+
+  function afficherCote(texte, x, y) {
+    ctx.save();
+    ctx.font = 'bold 11px Segoe UI, sans-serif';
+    ctx.fillStyle = '#1e293b';
+    ctx.textAlign = 'center';
+    ctx.fillText(texte, x, y);
+    ctx.restore();
+  }
+
+  // --- CALCULS TECHNIQUES & DIAGNOSTIC ---
+  function recalculerTout() {
+    const L = (parseFloat(document.getElementById('bat-longueur').value) || 0) / 1000;
+    const l = (parseFloat(document.getElementById('bat-largeur').value) || 0) / 1000;
+    const hHaut = parseFloat(document.getElementById('chainage-haut').value) || 3000;
+    const pente1 = parseFloat(document.getElementById('pente-pan-1').value) || 35;
+    const debord = (parseFloat(document.getElementById('debord-toit').value) || 0) / 1000;
+
+    const surfaceSol = L * l;
+    const LToit = L + 2 * debord;
+    const lToit = l + 2 * debord;
+    const facteurPente = Math.sqrt(1 + Math.pow(pente1 / 100, 2));
+    const surfaceToit = LToit * lToit * facteurPente;
+
+    const demiPortee = (lToit / 2) * 1000;
+    const flecheToit = demiPortee * (pente1 / 100);
+    const faitageTotal = Math.round(hHaut + flecheToit);
+
+    const longueurAretiers = 4 * Math.sqrt(Math.pow(lToit / 2, 2) + Math.pow(lToit / 2, 2) + Math.pow(flecheToit / 1000, 2));
+
+    document.getElementById('stat-surface-sol').textContent = surfaceSol.toFixed(2) + ' m²';
+    document.getElementById('stat-surface-toit').textContent = surfaceToit.toFixed(2) + ' m²';
+    document.getElementById('stat-faitage').textContent = `${faitageTotal} mm (${(faitageTotal / 1000).toFixed(2)} m)`;
+    document.getElementById('stat-aretiers').textContent = longueurAretiers.toFixed(2) + ' m';
+
+    const badge = document.getElementById('badge-esthetique');
+    const conseils = document.getElementById('zone-conseils');
+    if (pente1 < 15) {
+      badge.textContent = "⚠️ Pente faible : Risque d'infiltration (Bac acier long pan conseillé)";
+      conseils.textContent = "Pour une pente < 15%, privilégiez des tôles bac d'un seul tenant sans recouvrement transversal et renforcez l'étanchéité des vis.";
+    } else if (pente1 > 55) {
+      badge.textContent = "🏔️ Pente forte : Prise au vent élevée";
+      conseils.textContent = "Pente > 55% : prévoyez des contreventements supplémentaires et des pannes rapprochées (entraxe 1.00 m max).";
+    } else {
+      badge.textContent = "✨ Équilibre architectural : Optimal (30% - 45%)";
+      conseils.textContent = `Pour ${surfaceToit.toFixed(1)} m² de couverture, prévoyez environ ${Math.ceil(surfaceToit * 1.08)} m² de tôles (chutes 8% incluses) et ${Math.ceil((LToit / 1.2) * (lToit / 4))} pannes.`;
+    }
+  }
+
+  // --- GESTION DU CATALOGUE & AUTO-SUGGESTION ---
+  function actualiserCatalogueUI() {
+    const tbody = document.getElementById('corps-catalogue');
+    const datalist = document.getElementById('liste-suggestions');
+    tbody.innerHTML = '';
+    datalist.innerHTML = '';
+
+    catalogue.forEach((item, index) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${item.nom}</td>
+        <td>${item.unite}</td>
+        <td>${item.prix.toLocaleString('fr-FR')} FCFA</td>
+        <td><button class="btn" onclick="supprimerCatalogue(${index})">🗑️</button></td>
+      `;
+      tbody.appendChild(tr);
+
+      const opt = document.createElement('option');
+      opt.value = item.nom;
+      datalist.appendChild(opt);
+    });
+    localStorage.setItem('kcs_catalogue', JSON.stringify(catalogue));
+  }
+
+  function ajouterAuCatalogue() {
+    const nom = document.getElementById('cat-nom').value.trim();
+    const unite = document.getElementById('cat-unite').value.trim() || 'pièce';
+    const prix = parseFloat(document.getElementById('cat-prix').value) || 0;
+    if (!nom) return;
+    catalogue.push({ nom, unite, prix });
+    document.getElementById('cat-nom').value = '';
+    document.getElementById('cat-prix').value = '';
+    actualiserCatalogueUI();
+  }
+
+  function supprimerCatalogue(index) {
+    catalogue.splice(index, 1);
+    actualiserCatalogueUI();
+  }
+
+  function autoRemplirPrixArticle() {
+    const val = document.getElementById('saisie-article').value.trim().toLowerCase();
+    const trouve = catalogue.find(c => c.nom.toLowerCase() === val);
+    if (trouve) {
+      document.getElementById('saisie-unite').value = trouve.unite;
+      document.getElementById('saisie-pu').value = trouve.prix;
+    }
+  }
+
+  // --- GESTION DU DEVIS & IMPRESSION ---
+  function basculerVerrouillageDevis() {
+    planVerrouille = !planVerrouille;
+    const btn = document.getElementById('btn-verrou');
+    btn.textContent = planVerrouille ? "🔓 Plan Verrouillé (Cliquer pour modifier)" : "🔒 Verrouiller le plan pour Devis";
+    btn.className = planVerrouille ? "btn btn-succes" : "btn btn-or";
+    mettreAJourImageDevis();
+  }
+
+  function mettreAJourImageDevis() {
+    const dataUrl = canvas.toDataURL('image/png');
+    document.getElementById('image-banniere-devis').src = dataUrl;
+    document.getElementById('image-filigrane-devis').src = dataUrl;
+    appliquerModeImageDevis();
+  }
+
+  function appliquerModeImageDevis() {
+    const mode = document.getElementById('mode-image-devis').value;
+    const ban = document.getElementById('image-banniere-devis');
+    const fil = document.getElementById('image-filigrane-devis');
+    ban.style.display = (mode === 'banniere') ? 'block' : 'none';
+    fil.style.display = (mode === 'filigrane') ? 'block' : 'none';
+  }
+
+  function transfererMetreVersDevis() {
+    const surfaceToit = parseFloat(document.getElementById('stat-surface-toit').textContent) || 0;
+    const L = (parseFloat(document.getElementById('bat-longueur').value) || 0) / 1000;
+    const l = (parseFloat(document.getElementById('bat-largeur').value) || 0) / 1000;
+
+    const qteToles = Math.ceil(surfaceToit * 1.08);
+    const qtePannes = Math.ceil((l / 1.2) * (L / 5.5));
+    const qteFaitieres = Math.ceil(L / 1.9);
+
+    lignesDevis = [
+      { designation: "Tôle Bac Aluzinc 0.45mm (chutes 8% incluses)", unite: "m²", qte: qteToles, pu: 4800 },
+      { designation: "Tube Rectangulaire 80x40x2mm (Pannes & Fermes)", unite: "barre", qte: qtePannes, pu: 16500 },
+      { designation: "Faîtière Aluzinc (2m)", unite: "pièce", qte: qteFaitieres, pu: 4200 },
+      { designation: "Vis autoforeuse avec rondelle (boîte 100)", unite: "boîte", qte: Math.ceil(qteToles / 18), pu: 3500 }
+    ];
+    actualiserCalculDevis();
+    changerOnglet('devis', document.querySelectorAll('.onglet')[1]);
+  }
+
+  function ajouterLigneDevis() {
+    const designation = document.getElementById('saisie-article').value.trim();
+    const unite = document.getElementById('saisie-unite').value.trim() || 'pièce';
+    const qte = parseFloat(document.getElementById('saisie-qte').value) || 0;
+    const pu = parseFloat(document.getElementById('saisie-pu').value) || 0;
+    if (!designation || qte <= 0) return;
+
+    lignesDevis.push({ designation, unite, qte, pu });
+    document.getElementById('saisie-article').value = '';
+    document.getElementById('saisie-qte').value = 1;
+    actualiserCalculDevis();
+  }
+
+  function supprimerLigneDevis(index) {
+    lignesDevis.splice(index, 1);
+    actualiserCalculDevis();
+  }
+
+  function actualiserCalculDevis() {
+    const tbody = document.getElementById('corps-devis');
+    tbody.innerHTML = '';
+    let sousTotal = 0;
+
+    lignesDevis.forEach((ligne, idx) => {
+      const totalLigne = ligne.qte * ligne.pu;
+      sousTotal += totalLigne;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${ligne.designation}</td>
+        <td>${ligne.unite}</td>
+        <td>${ligne.qte}</td>
+        <td>${ligne.pu.toLocaleString('fr-FR')}</td>
+        <td>${totalLigne.toLocaleString('fr-FR')}</td>
+        <td class="no-print"><button class="btn" onclick="supprimerLigneDevis(${idx})">🗑️</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    const tauxImprevu = parseFloat(document.getElementById('marge-imprevue').value) || 0;
+    const tauxMarge = parseFloat(document.getElementById('marge-prevue').value) || 0;
+
+    const montantImprevu = Math.round(sousTotal * (tauxImprevu / 100));
+    const montantMarge = Math.round(sousTotal * (tauxMarge / 100));
+    const totalTTC = sousTotal + montantImprevu + montantMarge;
+
+    document.getElementById('lbl-imprevu').textContent = tauxImprevu;
+    document.getElementById('lbl-marge').textContent = tauxMarge;
+    document.getElementById('total-ht').textContent = sousTotal.toLocaleString('fr-FR') + ' FCFA';
+    document.getElementById('montant-imprevu').textContent = montantImprevu.toLocaleString('fr-FR') + ' FCFA';
+    document.getElementById('montant-marge').textContent = montantMarge.toLocaleString('fr-FR') + ' FCFA';
+    document.getElementById('total-ttc').innerHTML = `<strong>${totalTTC.toLocaleString('fr-FR')} FCFA</strong>`;
+
+    localStorage.setItem('kcs_devis', JSON.stringify(lignesDevis));
+  }
+
+  // --- SAUVEGARDE & EXPORT JSON ---
+  function sauvegarderProjetLocal() {
+    const projet = {
+      traits,
+      lignesDevis,
+      parametres: {
+        L: document.getElementById('bat-longueur').value,
+        l: document.getElementById('bat-largeur').value,
+        pente1: document.getElementById('pente-pan-1').value
+      }
+    };
+    localStorage.setItem('kcs_projet_actif', JSON.stringify(projet));
+    alert("✅ Projet sauvegardé localement dans le navigateur !");
+  }
+
+  function exporterProjetJSON() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ traits, lignesDevis, catalogue }, null, 2));
+    const a = document.createElement('a');
+    a.setAttribute("href", dataStr);
+    a.setAttribute("download", "projet_kcs_charpente.json");
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  // --- INITIALISATION ---
+  document.getElementById('date-devis').textContent = "Date : " + new Date().toLocaleDateString('fr-FR');
+  redimensionnerCanvas();
+  actualiserCatalogueUI();
+  recalculerTout();
+  actualiserCalculDevis();
 </script>
-</body></html>
+</body>
+</html>
