@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KCS CHARPENTE PRO CI — Studio CAO & Devis</title>
+  <style>
+    :root {
+      --marine: #1e3a5f;
+      --bleu: #2563eb;
+      --fond: #f1f5f9;
+      --carte: #ffffff;
+      --bord: #cbd5e1;
+      --texte: #0f172a;
+      --rouge: #dc2626;
+      --vert: #15803d;
+    }
+    * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body { margin: 0; background: var(--fond); color: var(--texte); }
+
+    .topbar {
+      background: #fff; border-bottom: 1px solid var(--bord);
+      padding: 8px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .topbar-titre { font-weight: 800; font-size: 14px; color: var(--marine); }
+    .topbar-sous { font-size: 11.5px; color: #64748b; }
+    .topbar-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+    .tabs {
+      display: flex; gap: 6px; padding: 8px 16px; background: #e2e8f0; border-bottom: 1px solid var(--bord); flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 7px 14px; border: 1px solid transparent; border-radius: 6px 6px 0 0;
+      background: #f8fafc; cursor: pointer; font-weight: 700; font-size: 12px; color: #334155;
+    }
+    .tab-btn.actif { background: #fff; border-color: var(--bord); border-bottom-color: #fff; color: var(--bleu); }
+
+    .workspace { display: grid; grid-template-columns: 1.35fr 0.9fr; gap: 14px; padding: 14px 16px; }
+    @media (max-width: 980px) { .workspace { grid-template-columns: 1fr; } }
+    .col-droite { display: flex; flex-direction: column; gap: 12px; }
+    .card {
+      background: var(--carte); border: 1px solid var(--bord); border-radius: 8px; padding: 12px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+    }
+    .hidden { display: none !important; }
+
+    button {
+      padding: 6px 10px; border-radius: 6px; border: 1px solid var(--bord);
+      background: #fff; cursor: pointer; font-weight: 600; font-size: 12px; color: var(--texte);
+    }
+    button:hover:not(:disabled) { background: #f8fafc; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-bleu { background: var(--bleu); color: #fff; border-color: var(--bleu); }
+    .btn-bleu:hover:not(:disabled) { background: #1d4ed8; }
+    .btn-rouge { background: var(--rouge); color: #fff; border-color: var(--rouge); }
+    .btn-vert { background: var(--vert); color: #fff; border-color: var(--vert); }
+
+    .plan-box {
+      border: 1px solid var(--bord); border-radius: 6px; background: #fff; padding: 10px; margin-bottom: 12px;
+    }
+    canvas { width: 100%; height: 250px; display: block; border: 1px dashed #cbd5e1; border-radius: 4px; background: #fcfcfd; }
+
+    .form-ligne {
+      display: grid; grid-template-columns: 2fr 0.8fr 0.7fr 1fr auto; gap: 8px; align-items: end; margin-bottom: 10px;
+    }
+    @media (max-width: 760px) { .form-ligne { grid-template-columns: 1fr 1fr; } }
+    label { display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 3px; }
+    input, select {
+      width: 100%; padding: 6px 8px; border: 1px solid var(--bord); border-radius: 5px; font-size: 12px;
+    }
+
+    .marges-bar {
+      display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding: 8px 0; border-top: 1px solid #e2e8f0;
+    }
+    .marges-bar label { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-size: 12px; }
+    .marges-bar input { width: 64px; }
+
+    .devis-entete {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+      padding-bottom: 10px; border-bottom: 2px solid var(--marine); margin-bottom: 10px; flex-wrap: wrap;
+    }
+    .devis-entete h2 { margin: 0; font-size: 15px; color: var(--marine); }
+    .devis-entete p { margin: 2px 0 0; font-size: 11.5px; color: #475569; }
+    .devis-meta { text-align: right; font-size: 11.5px; color: #334155; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+    th, td { border: 1px solid #e2e8f0; padding: 6px 8px; text-align: left; }
+    th { background: #f8fafc; color: #334155; font-weight: 700; }
+
+    .totaux-box {
+      margin-top: 10px; background: #f8fafc; border: 1px solid var(--bord); border-radius: 6px; padding: 10px;
+      font-size: 12px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+
+    .card-titre { font-weight: 800; font-size: 12.5px; color: var(--marine); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .metric-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed #e2e8f0; font-size: 12px; }
+    .metric-row:last-child { border-bottom: none; }
+    .badge-ok { background: #dcfce7; color: #166534; font-weight: 700; padding: 2px 7px; border-radius: 999px; font-size: 11px; }
+    .prop-texte { font-size: 12px; color: #334155; line-height: 1.45; margin-bottom: 10px; }
+
+    @media print {
+      .topbar, .tabs, .col-droite, .no-print { display: none !important; }
+      .workspace { display: block; padding: 0; }
+      .card { border: none; box-shadow: none; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div>
+      <div class="topbar-titre">KCS CHARPENTE PRO CI — Studio CAO & Devis</div>
+      <div class="topbar-sous">Conception 2D • Cotation mm • Charpente & Devis Saas (Mode Hors-Ligne Actif)</div>
+    </div>
+    <div class="topbar-actions no-print">
+      <button class="btn-rouge" onclick="sauvegarderProjet()">💾 Sauvegarder</button>
+      <button onclick="exporterJSON()">📤 Exporter JSON</button>
+      <button onclick="document.getElementById('input-json').click()">📥 Importer JSON</button>
+      <input type="file" id="input-json" accept=".json" class="hidden" onchange="importerJSON(event)" />
+      <button class="btn-vert" onclick="window.print()">🖨️ PDF / Imprimer</button>
+    </div>
+  </header>
+
+  <nav class="tabs no-print">
+    <button class="tab-btn actif" data-tab="atelier" onclick="changerOnglet('atelier')">📐 1. Atelier Dessin & Structure</button>
+    <button class="tab-btn" data-tab="devis" onclick="changerOnglet('devis')">🔒 2. Devis Verrouillé & PDF</button>
+    <button class="tab-btn" data-tab="catalogue" onclick="changerOnglet('catalogue')">📦 3. Catalogue Tôles & Matériaux</button>
+  </nav>
+
+  <main class="workspace">
+    <section>
+      <div id="tab-atelier" class="card">
+        <div class="no-print" style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:10px;">
+          <button id="btn-verrou" class="btn-rouge" onclick="basculerVerrouillage()">🔒 Verrouiller le plan pour Devis</button>
+          <label style="display:inline-flex; align-items:center; gap:6px; margin:0;">
+            Affichage du dessin :
+            <select id="mode-affichage" style="width:auto;" onchange="redessinerPlan()">
+              <option value="banniere" selected>En Bannière (En-tête)</option>
+              <option value="complet">Grand format Atelier</option>
+            </select>
+          </label>
+          <label style="display:inline-flex; align-items:center; gap:4px; margin:0;">
+            Long. (m) :
+            <input type="number" id="dim-long" value="18" step="0.5" min="2" style="width:68px;" oninput="mettreAJourMetriques()" />
+          </label>
+          <label style="display:inline-flex; align-items:center; gap:4px; margin:0;">
+            Larg. (m) :
+            <input type="number" id="dim-larg" value="8" step="0.5" min="2" style="width:68px;" oninput="mettreAJourMetriques()" />
+          </label>
+          <label style="display:inline-flex; align-items:center; gap:4px; margin:0;">
+            Pente (°) :
+            <input type="number" id="pente-deg" value="22" step="1" min="5" max="60" style="width:60px;" oninput="mettreAJourMetriques()" />
+          </label>
+        </div>
+
+        <div class="plan-box">
+          <canvas id="canvas-plan"></canvas>
+        </div>
+
+        <div class="form-ligne no-print">
+          <div>
+            <label for="champ-designation">Désignation (Tapez pour suggérer)</label>
+            <input type="text" id="champ-designation" list="suggestions-catalogue" placeholder="Ex: Tôle bac, Chevron..." oninput="appliquerSuggestionCatalogue()" />
+            <datalist id="suggestions-catalogue"></datalist>
+          </div>
+          <div>
+            <label for="champ-unite">Unité</label>
+            <input type="text" id="champ-unite" value="pièce" />
+          </div>
+          <div>
+            <label for="champ-qte">Quantité</label>
+            <input type="number" id="champ-qte" value="1" min="0.1" step="0.1" />
+          </div>
+          <div>
+            <label for="champ-pu">Prix Unitaire (FCFA)</label>
+            <input type="number" id="champ-pu" value="0" min="0" step="100" />
+          </div>
+          <div>
+            <button class="btn-bleu" onclick="ajouterLigneDevis()">Ajouter au devis</button>
+          </div>
+        </div>
+
+        <div class="marges-bar no-print">
+          <label>Marge imprévu (%) :
+            <input type="number" id="marge-imprevu" value="5" min="0" max="100" oninput="calculerTotauxDevis()" />
+          </label>
+          <label>Marge prévue (%) :
+            <input type="number" id="marge-prevue" value="20" min="0" max="100" oninput="calculerTotauxDevis()" />
+          </label>
+          <span id="statut-verrou" style="margin-left:auto; font-size:11.5px; font-weight:700; color:var(--vert);">● Plan modifiable</span>
+        </div>
+
+        <div class="devis-entete">
+          <div>
+            <h2>KCS CHARPENTE PRO CI</h2>
+            <p>Abidjan, Côte d'Ivoire • Étude Charpente Métallique & Bois, Couverture</p>
+          </div>
+          <div class="devis-meta">
+            <strong>DEVIS ESTIMATIF & QUANTITATIF</strong>
+            <div id="date-devis">Date : —</div>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Désignation</th>
+              <th>Unité</th>
+              <th>Qté</th>
+              <th>PU (FCFA)</th>
+              <th>Total HT (FCFA)</th>
+              <th class="no-print">Action</th>
+            </tr>
+          </thead>
+          <tbody id="corps-devis"></tbody>
+        </table>
+
+        <div class="totaux-box" id="resume-totaux"></div>
+      </div>
+
+      <div id="tab-devis" class="card hidden">
+        <h3 style="margin-top:0; color:var(--marine);">🔒 Devis Verrouillé & Prêt pour Export PDF</h3>
+        <p style="font-size:12px; color:#475569;">
+          Vérifiez ici la synthèse finale avant impression ou export PDF. Utilisez le bouton <strong>Verrouiller le plan pour Devis</strong> dans l'onglet 1 pour figer les données.
+        </p>
+        <div id="apercu-verrouille"></div>
+      </div>
+
+      <div id="tab-catalogue" class="card hidden">
+        <h3 style="margin-top:0; color:var(--marine);">📦 Catalogue Tôles & Matériaux (Côte d'Ivoire)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Désignation</th>
+              <th>Unité</th>
+              <th>Prix indicatif (FCFA)</th>
+              <th>Action rapide</th>
+            </tr>
+          </thead>
+          <tbody id="corps-catalogue"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <aside class="col-droite">
+      <div class="card">
+        <div class="card-titre">📊 Métriques & Diagnostic</div>
+        <div class="metric-row"><span>Emprise au sol :</span><strong id="m-emprise">—</strong></div>
+        <div class="metric-row"><span>Surface rampante toiture :</span><strong id="m-rampante">—</strong></div>
+        <div class="metric-row"><span>Hauteur faîtage estimée :</span><strong id="m-faitage">—</strong></div>
+        <div class="metric-row"><span>Longueur arêtiers / noues :</span><strong id="m-aretiers">—</strong></div>
+        <div class="metric-row" style="align-items:center; gap:6px; padding-top:8px;">
+          <span class="badge-ok" id="m-equilibre">● Équilibre architectural : Optimal (100% / 45%)</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-titre">💡 Propositions Techniques</div>
+        <div class="prop-texte" id="texte-proposition">—</div>
+        <button class="btn-bleu" style="width:100%;" onclick="genererLignesDepuisPlan()">
+          ⚡ Générer les lignes du Devis depuis le Plan
+        </button>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    const CLE_STOCKAGE = 'kcs_charpente_pro_ci_v1';
+
+    const catalogueCI = [
+      { nom: 'Tôle bac acier 5/10 prélaquée (couverture)', unite: 'm²', pu: 6500 },
+      { nom: 'Chevron bois rouge / Framiré (6x8 cm)', unite: 'ml', pu: 1400 },
+      { nom: 'Panne bois / profilé acier', unite: 'ml', pu: 2200 },
+      { nom: 'Faîtière galvanisée / prélaquée', unite: 'ml', pu: 3500 },
+      { nom: 'Pointes / vis autoforeuses & accessoires', unite: 'lot', pu: 25000 }
+    ];
+
+    const state = {
+      verrouille: false,
+      lignes: [],
+      longueur: 18,
+      largeur: 8,
+      penteDeg: 22,
+      margeImprevu: 5,
+      margePrevue: 20
+    };
+
+    function formaterFCFA(n) {
+      return Math.round(n || 0).toLocaleString('fr-FR') + ' FCFA';
+    }
+
+    function changerOnglet(nom) {
+      ['atelier', 'devis', 'catalogue'].forEach(id => {
+        document.getElementById('tab-' + id).classList.toggle('hidden', id !== nom);
+      });
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('actif', btn.dataset.tab === nom);
+      });
+      if (nom === 'devis') rendreApercuVerrouille();
+      redessinerPlan();
+    }
+
+    function basculerVerrouillage() {
+      state.verrouille = !state.verrouille;
+      const btn = document.getElementById('btn-verrou');
+      const statut = document.getElementById('statut-verrou');
+      btn.textContent = state.verrouille ? '🔓 Déverrouiller le Devis' : '🔒 Verrouiller le plan pour Devis';
+      btn.className = state.verrouille ? 'btn-vert' : 'btn-rouge';
+      statut.textContent = state.verrouille ? '🔒 Devis verrouillé' : '● Plan modifiable';
+      statut.style.color = state.verrouille ? 'var(--rouge)' : 'var(--vert)';
+      ['dim-long', 'dim-larg', 'pente-deg', 'champ-designation', 'champ-unite', 'champ-qte', 'champ-pu', 'marge-imprevu', 'marge-prevue']
+        .forEach(id => { document.getElementById(id).disabled = state.verrouille; });
+      rendreDevis();
+      rendreApercuVerrouille();
+    }
+
+    function calculerMetriques() {
+      const L = Math.max(1, parseFloat(document.getElementById('dim-long').value) || 18);
+      const l = Math.max(1, parseFloat(document.getElementById('dim-larg').value) || 8);
+      const deg = Math.min(60, Math.max(5, parseFloat(document.getElementById('pente-deg').value) || 22));
+      state.longueur = L;
+      state.largeur = l;
+      state.penteDeg = deg;
+
+      const rad = (deg * Math.PI) / 180;
+      const demiLarg = l / 2;
+      const hauteurFaitage = demiLarg * Math.tan(rad);
+      const rampanteLargeur = demiLarg / Math.cos(rad);
+      const surfaceRampante = L * rampanteLargeur * 2;
+      const longueurAretiers = Math.sqrt(Math.pow(demiLarg, 2) + Math.pow(demiLarg, 2) + Math.pow(hauteurFaitage, 2)) * 4;
+      const pannesEstimees = Math.ceil(rampanteLargeur / 1.1) * 2 * L;
+
+      return {
+        emprise: L * l,
+        surfaceRampante,
+        surfaceAvecChutes: surfaceRampante * 1.08,
+        hauteurFaitage,
+        longueurAretiers,
+        pannesEstimees
+      };
+    }
+
+    function mettreAJourMetriques() {
+      const m = calculerMetriques();
+      document.getElementById('m-emprise').textContent = `${m.emprise.toFixed(2)} m²`;
+      document.getElementById('m-rampante').textContent = `${m.surfaceRampante.toFixed(2)} m²`;
+      document.getElementById('m-faitage').textContent = `${(m.hauteurFaitage * 1000).toFixed(0)} mm (${m.hauteurFaitage.toFixed(2)} m)`;
+      document.getElementById('m-aretiers').textContent = `${m.longueurAretiers.toFixed(2)} m`;
+      document.getElementById('texte-proposition').textContent =
+        `Pour ${m.surfaceRampante.toFixed(1)} m² de couverture, prévoyez environ ${m.surfaceAvecChutes.toFixed(1)} m² de tôles (chutes 8% incluses) et ${Math.round(m.pannesEstimees)} ml de pannes.`;
+      redessinerPlan();
+    }
+
+    function redessinerPlan() {
+      const canvas = document.getElementById('canvas-plan');
+      const mode = document.getElementById('mode-affichage').value;
+      canvas.height = mode === 'complet' ? 360 : 230;
+      canvas.width = canvas.clientWidth || 640;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const m = 32;
+      const w = Math.max(120, canvas.width - m * 2);
+      const h = Math.max(90, canvas.height - m * 2);
+      const x0 = (canvas.width - w) / 2;
+      const y0 = (canvas.height - h) / 2;
+
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(x0, y0, w, h);
+
+      const retrait = Math.min(w, h) * 0.25;
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(x0, y0); ctx.lineTo(x0 + retrait, y0 + h / 2);
+      ctx.moveTo(x0, y0 + h); ctx.lineTo(x0 + retrait, y0 + h / 2);
+      ctx.moveTo(x0 + w, y0); ctx.lineTo(x0 + w - retrait, y0 + h / 2);
+      ctx.moveTo(x0 + w, y0 + h); ctx.lineTo(x0 + w - retrait, y0 + h / 2);
+      ctx.moveTo(x0 + retrait, y0 + h / 2); ctx.lineTo(x0 + w - retrait, y0 + h / 2);
+      ctx.stroke();
+
+      ctx.fillStyle = '#334155';
+      ctx.font = '11px Segoe UI';
+      ctx.fillText(`${state.longueur} m`, x0 + w / 2 - 14, y0 - 8);
+      ctx.fillText(`${state.largeur} m`, x0 - 28, y0 + h / 2);
+    }
+
+    function peuplerCatalogue() {
+      const dl = document.getElementById('suggestions-catalogue');
+      const tbody = document.getElementById('corps-catalogue');
+      dl.innerHTML = catalogueCI.map(c => `<option value="${c.nom}"></option>`).join('');
+      tbody.innerHTML = catalogueCI.map((c, idx) => `
+        <tr>
+          <td>${c.nom}</td>
+          <td>${c.unite}</td>
+          <td>${formaterFCFA(c.pu)}</td>
+          <td><button onclick="utiliserArticleCatalogue(${idx})">Charger dans le formulaire</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function appliquerSuggestionCatalogue() {
+      const val = document.getElementById('champ-designation').value.trim().toLowerCase();
+      const found = catalogueCI.find(c => c.nom.toLowerCase() === val);
+      if (found) {
+        document.getElementById('champ-unite').value = found.unite;
+        document.getElementById('champ-pu').value = found.pu;
+      }
+    }
+
+    function utiliserArticleCatalogue(idx) {
+      const item = catalogueCI[idx];
+      document.getElementById('champ-designation').value = item.nom;
+      document.getElementById('champ-unite').value = item.unite;
+      document.getElementById('champ-pu').value = item.pu;
+      changerOnglet('atelier');
+    }
+
+    function ajouterLigneDevis() {
+      if (state.verrouille) return alert('Le devis est verrouillé.');
+      const designation = document.getElementById('champ-designation').value.trim();
+      const unite = document.getElementById('champ-unite').value.trim() || 'pièce';
+      const qte = parseFloat(document.getElementById('champ-qte').value) || 0;
+      const pu = parseFloat(document.getElementById('champ-pu').value) || 0;
+      if (!designation || qte <= 0) return alert('Renseignez une désignation et une quantité valide.');
+      state.lignes.push({ designation, unite, qte, pu });
+      document.getElementById('champ-designation').value = '';
+      document.getElementById('champ-qte').value = 1;
+      document.getElementById('champ-pu').value = 0;
+      rendreDevis();
+    }
+
+    function supprimerLigne(index) {
+      if (state.verrouille) return;
+      state.lignes.splice(index, 1);
+      rendreDevis();
+    }
+
+    function genererLignesDepuisPlan() {
+      if (state.verrouille) return alert('Déverrouillez le devis avant de régénérer les lignes.');
+      const m = calculerMetriques();
+      state.lignes = [
+        { designation: 'Tôle bac acier 5/10 (avec chutes 8%)', unite: 'm²', qte: Number(m.surfaceAvecChutes.toFixed(1)), pu: 6500 },
+        { designation: 'Pannes charpente', unite: 'ml', qte: Math.round(m.pannesEstimees), pu: 2200 },
+        { designation: 'Faîtage & arêtiers', unite: 'ml', qte: Number((state.longueur + m.longueurAretiers).toFixed(1)), pu: 3500 }
+      ];
+      rendreDevis();
+    }
+
+    function calculerTotauxDevis() {
+      state.margeImprevu = Math.max(0, parseFloat(document.getElementById('marge-imprevu').value) || 0);
+      state.margePrevue = Math.max(0, parseFloat(document.getElementById('marge-prevue').value) || 0);
+      const baseHT = state.lignes.reduce((s, l) => s + l.qte * l.pu, 0);
+      const montantImprevu = baseHT * (state.margeImprevu / 100);
+      const montantPrevu = baseHT * (state.margePrevue / 100);
+      const totalGeneral = baseHT + montantImprevu + montantPrevu;
+
+      document.getElementById('resume-totaux').innerHTML = `
+        <div><strong>Sous-total HT :</strong> ${formaterFCFA(baseHT)}</div>
+        <div><strong>Imprévu (${state.margeImprevu}%) :</strong> ${formaterFCFA(montantImprevu)}</div>
+        <div><strong>Marge (${state.margePrevue}%) :</strong> ${formaterFCFA(montantPrevu)}</div>
+        <div style="font-size:13.5px; color:var(--marine);"><strong>TOTAL ESTIMÉ : ${formaterFCFA(totalGeneral)}</strong></div>
+      `;
+      return { baseHT, montantImprevu, montantPrevu, totalGeneral };
+    }
+
+    function rendreDevis() {
+      const tbody = document.getElementById('corps-devis');
+      tbody.innerHTML = state.lignes.length
+        ? state.lignes.map((l, i) => `
+            <tr>
+              <td>${l.designation}</td>
+              <td>${l.unite}</td>
+              <td>${l.qte}</td>
+              <td>${formaterFCFA(l.pu)}</td>
+              <td><strong>${formaterFCFA(l.qte * l.pu)}</strong></td>
+              <td class="no-print"><button onclick="supprimerLigne(${i})" ${state.verrouille ? 'disabled' : ''}>✕</button></td>
+            </tr>
+          `).join('')
+        : `<tr><td colspan="6" style="text-align:center; color:#64748b;">Aucune ligne dans le devis. Ajoutez une ligne ou cliquez sur « Générer les lignes du Devis depuis le Plan ».</td></tr>`;
+      calculerTotauxDevis();
+    }
+
+    function rendreApercuVerrouille() {
+      const t = calculerTotauxDevis();
+      document.getElementById('apercu-verrouille').innerHTML = `
+        <p><strong>Statut :</strong> ${state.verrouille ? 'Verrouillé' : 'Brouillon non verrouillé'}</p>
+        <p><strong>Dimensions :</strong> ${state.longueur} m × ${state.largeur} m (Pente ${state.penteDeg}°)</p>
+        <p><strong>Nombre de postes :</strong> ${state.lignes.length}</p>
+        <p><strong>Total estimé :</strong> <strong style="color:var(--marine); font-size:15px;">${formaterFCFA(t.totalGeneral)}</strong></p>
+      `;
+    }
+
+    function sauvegarderProjet() {
+      localStorage.setItem(CLE_STOCKAGE, JSON.stringify(state));
+      alert('Projet sauvegardé localement dans le navigateur.');
+    }
+
+    function exporterJSON() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'kcs-charpente-devis.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importerJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          Object.assign(state, data);
+          document.getElementById('dim-long').value = state.longueur;
+          document.getElementById('dim-larg').value = state.largeur;
+          document.getElementById('pente-deg').value = state.penteDeg;
+          document.getElementById('marge-imprevu').value = state.margeImprevu;
+          document.getElementById('marge-prevue').value = state.margePrevue;
+          mettreAJourMetriques();
+          rendreDevis();
+          alert('Projet importé avec succès.');
+        } catch {
+          alert('Fichier JSON invalide.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    window.addEventListener('load', () => {
+      const saved = localStorage.getItem(CLE_STOCKAGE);
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          Object.assign(state, data);
+          document.getElementById('dim-long').value = state.longueur;
+          document.getElementById('dim-larg').value = state.largeur;
+          document.getElementById('pente-deg').value = state.penteDeg;
+          document.getElementById('marge-imprevu').value = state.margeImprevu;
+          document.getElementById('marge-prevue').value = state.margePrevue;
+        } catch {}
+      }
+      document.getElementById('date-devis').textContent = 'Date : ' + new Date().toLocaleDateString('fr-FR');
+      peuplerCatalogue();
+      mettreAJourMetriques();
+      rendreDevis();
+    });
+
+    window.addEventListener('resize', redessinerPlan);
+  </script>
+</body>
+</html>
